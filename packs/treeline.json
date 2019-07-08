@@ -1,0 +1,319 @@
+{
+	"name": "treeline",
+	"minecraftVersion": "1.12.2",
+	"forgeVersion": "1.12.2-14.23.5.2838",
+	"ram": {
+		"preferred": 4,
+		"minimum": 3,
+		"maximum": 6
+	},
+	"profile": {
+		"icon": "Lectern_Book"
+	},
+	"mods": {
+		"applied-energistics-2": {
+			"name": "Applied Energistics 2",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2/download/2652453/file"
+		},
+		"baubles": {
+			"name": "Baubles",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/baubles/download/2518667/file"
+		},
+		"biomes-o-plenty": {
+			"name": "Biomes O' Plenty",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/biomes-o-plenty/download/2715506/file"
+		},
+		"blood-magic": {
+			"name": "Blood Magic",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/blood-magic/download/2713291/file",
+			"dependencies": [
+				"guide-api"
+			]
+		},
+		"botania": {
+			"name": "Botania",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/botania/download/2698039/file",
+			"dependencies": [
+				"baubles"
+			]
+		},
+		"codechicken-lib-1-8": {
+			"name": "CodeChicken Lib 1.8.+",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/codechicken-lib-1-8/download/2618630/file"
+		},
+		"cofh-core": {
+			"name": "CoFH Core",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/cofh-core/download/2716100/file",
+			"dependencies": [
+				"redstone-flux"
+			]
+		},
+		"cofh-world": {
+			"name": "CoFH World",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/cofh-world/download/2715784/file"
+		},
+		"cooking-for-blockheads": {
+			"name": "Cooking for Blockheads",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads/download/2733516/file"
+		},
+		"deadly-monsters": {
+			"name": "Deadly Monsters",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/deadly-monsters/download/2522268/file"
+		},
+		"decocraft2": {
+			"name": "Decocraft2",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/decocraft2/download/2621015/file",
+			"dependencies": [
+				"ptrlib"
+			]
+		},
+		"farming-for-blockheads": {
+			"name": "Farming for Blockheads",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/farming-for-blockheads/download/2733508/file"
+		},
+		"forge-multipart-cbe": {
+			"name": "Forge MultiPart CBE",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/forge-multipart-cbe/download/2661099/file",
+			"dependencies": [
+				"codechicken-lib-1-8"
+			]
+		},
+		"grappling-hook-mod": {
+			"name": "Grappling Hook Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/grappling-hook-mod/download/2604993/file"
+		},
+		"gravestone-mod": {
+			"name": "GraveStone Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/gravestone-mod/download/2608278/file"
+		},
+		"guide-api": {
+			"name": "Guide-API",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/guide-api/download/2645992/file"
+		},
+		"hwyla": {
+			"name": "Hwyla",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/hwyla/download/2568751/file"
+		},
+		"immersive-engineering": {
+			"name": "Immersive Engineering",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/immersive-engineering/download/2676501/file"
+		},
+		"industrial-craft": {
+			"name": "Industrial Craft",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/industrial-craft/download/2728635/file"
+		},
+		"iron-chests": {
+			"name": "Iron Chests",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/iron-chests/download/2723143/file"
+		},
+		"jei": {
+			"name": "Just Enough Items (JEI)",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/jei/download/2733488/file"
+		},
+		"journeymap": {
+			"name": "JourneyMap",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/journeymap/download/2736523/file"
+		},
+		"jurassicraft": {
+			"name": "JurassiCraft",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/jurassicraft/download/2672153/file",
+			"dependencies": [
+				"llibrary"
+			]
+		},
+		"llibrary": {
+			"name": "LLibrary",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/llibrary/download/2704186/file"
+		},
+		"mekanism": {
+			"name": "Mekanism",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism/download/2736277/file"
+		},
+		"mekanism-generators": {
+			"name": "Mekanism Generators",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism-generators/download/2736279/file",
+			"dependencies": [
+				"mekanism"
+			]
+		},
+		"mrcrayfishs-gun-mod": {
+			"name": "MrCrayfish's Gun Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mrcrayfishs-gun-mod/download/2716006/file",
+			"dependencies": [
+				"obfuscate"
+			]
+		},
+		"mrtjpcore": {
+			"name": "MrTJPCore",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mrtjpcore/download/2735197/file",
+			"dependencies": [
+				"codechicken-lib-1-8"
+			]
+		},
+		"obfuscate": {
+			"name": "Obfuscate",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/obfuscate/download/2625165/file"
+		},
+		"optifine": {
+			"name": "Optifine",
+			"type": "mod",
+			"target": "client",
+			"url": "https://optifine.net/adloadx?f=OptiFine_1.12.2_HD_U_E3.jar",
+			"manual": true
+		},
+		"pams-harvestcraft": {
+			"name": "Pam's HarvestCraft",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/pams-harvestcraft/download/2717443/file"
+		},
+		"ptrlib": {
+			"name": "PTRLib",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/ptrlib/download/2685154/file"
+		},
+		"reap-mod": {
+			"name": "Reap Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/reap-mod/download/2608352/file"
+		},
+		"redstone-flux": {
+			"name": "Redstone Flux",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/redstone-flux/download/2623090/file"
+		},
+		"spartan-shields": {
+			"name": "Spartan Shields",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/spartan-shields/download/2712229/file"
+		},
+		"thermal-dynamics": {
+			"name": "Thermal Dynamics",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/thermal-dynamics/download/2716138/file",
+			"dependencies": [
+				"codechicken-lib-1-8",
+				"thermal-foundation"
+			]
+		},
+		"thermal-expansion": {
+			"name": "Thermal Expansion",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/thermal-expansion/download/2715789/file",
+			"dependencies": [
+				"codechicken-lib-1-8",
+				"thermal-foundation"
+			]
+		},
+		"thermal-foundation": {
+			"name": "Thermal Foundation",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/thermal-foundation/download/2715788/file",
+			"dependencies": [
+				"cofh-core",
+				"cofh-world"
+			]
+		},
+		"wearable-backpacks": {
+			"name": "Wearable Backpacks",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/wearable-backpacks/download/2576699/file"
+		},
+		"morpheus": {
+			"name": "Morpheus",
+			"type": "mod",
+			"target": "server",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/morpheus/download/2664449/file"
+		},
+		"mtqfix": {
+			"name": "MTQFix",
+			"type": "mod",
+			"target": "server",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mtqfix/download/2530391/file"
+		},
+		"malisisdoors": {
+			"name": "MalisisDoors",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/malisisdoors/download/2526674/file"
+		},
+		"malisiscore": {
+			"name": "MalisisCore",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/malisiscore/download/2680892/file"
+		},
+		"randompatches": {
+			"name": "RandomPatches",
+			"type": "mod",
+			"target": "server",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/randompatches/download/2735698/file"
+		}
+	}
+}

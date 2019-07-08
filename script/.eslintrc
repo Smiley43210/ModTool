@@ -1,0 +1,14 @@
+{
+	"parserOptions": {
+		"ecmaVersion": 8,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"impliedStrict": true
+		}
+	},
+	"env": {
+		"browser": true,
+		"node": false,
+		"es6": true
+	}
+}

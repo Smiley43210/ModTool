@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Modpack Manager</title>
+		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Mono' rel='stylesheet'>
+		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+		<link href='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css' rel='stylesheet'>
+		<link href='style/style.css' rel='stylesheet'>
+		<link href='style/mdc.css' rel='stylesheet'>
+		<link href='style/progress.css' rel='stylesheet'>
+		<script src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js'></script>
+		<script type='module'>
+			class ProgressElement extends HTMLElement {
+				set value(value) {
+					if (value) {
+						this.setAttribute('value', value);
+					} else {
+						this.removeAttribute('value');
+					}
+				}
+				
+				get value() {
+					return this._value;
+				}
+				
+				set message(value) {
+					this._messageElement.innerHTML = value;
+				}
+				
+				constructor() {
+					super();
+					
+					this._maxValue = 1;
+					this._value = null;
+					
+					let shadow = this.attachShadow({mode: 'open'});
+					this._shadowElement = shadow;
+					let messageElement = document.createElement('div');
+					this._messageElement = messageElement;
+					let progressElement = document.createElement('div');
+					progressElement.className = 'progress';
+					let valueElement = document.createElement('div');
+					this._valueElement = valueElement;
+					valueElement.className = 'value';
+					let style = document.createElement('style');
+					style.textContent = `
+:host {
+	display: block;
+	margin: 5px 0;
+}
+
+:host(:not([value])) .value {
+	animation: indefinite 2.5s linear infinite;
+}
+
+.progress {
+	box-sizing: border-box;
+	display: inline-block;
+	height: 1em;
+	width: 100%;
+	vertical-align: -0.2em;
+	
+	background: #5f5f5f;
+	overflow: hidden;
+}
+
+.value {
+	height: 100%;
+	background: var(--mdc-theme-accent);
+}
+
+@keyframes indefinite {
+	0% {
+		width: 50%;
+		margin-left: -50%;
+	}
+
+	100% {
+		width: 50%;
+		margin-left: 100%;
+	}
+}
+`;
+					
+					shadow.appendChild(style);
+					shadow.appendChild(messageElement);
+					shadow.appendChild(progressElement);
+					progressElement.appendChild(valueElement);
+					
+					let observer = new MutationObserver((records, observer) => {
+						return this.observationCallback(records, observer);
+					});
+					let observationConfig = {attributeFilter: ['value', 'max'], attributes: true};
+					observer.observe(this, observationConfig);
+				}
+				
+				connectedCallback() {
+					this.update();
+				}
+				
+				observationCallback() {
+					this.update();
+				}
+				
+				update() {
+					this._maxValue = this.hasAttribute('max') ? Number(this.getAttribute('max')) : 1;
+					this._value = this.hasAttribute('value') ? Number(this.getAttribute('value')) : null;
+					
+					if (this._value) {
+						let percent = this._value / this._maxValue * 100;
+						
+						this._valueElement.style.width = `${percent}%`;
+					}
+				}
+				
+				addProgress() {
+					let progress = new ProgressElement();
+					this._shadowElement.appendChild(progress);
+					return progress;
+				}
+				
+				remove() {
+					this.parentNode.removeChild(this);
+				}
+			}
+				
+			customElements.define('progress-element', ProgressElement);
+		</script>
+	</head>
+	<body>
+		<main>
+			<div id='pack-select' class='sidebar'>
+				<header><h1>Modpacks</h1></header>
+			</div>
+			<div class='content'>
+				<div>
+					<h1 id='pack-name'>Select a Modpack</h1>
+					<div>Minecraft installation:</div>
+					<span id='install-dir'></span>
+					<button id='install-change' class='mdc-button mdc-button--raised' style='margin-left: 15px;'>
+						<span class='mdc-button__label'>Change...</span>
+					</button>
+					<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%; margin-top: 10px;'>
+						<span class='mdc-button__label'>Install Pack for Client</span>
+					</button>
+					<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%; margin-top: 10px;'>
+						<span class='mdc-button__label'>Install Pack for Server</span>
+					</button>
+					<div id='progress' style='display: none;'>
+						<progress-element id='progress-main'></progress-element>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- You can also require other files to run in this process -->
+		<script src='./renderer.js'></script>
+	</body>
+</html>

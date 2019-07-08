@@ -1,0 +1,34 @@
+{
+  "name": "mc-mod-tool",
+  "version": "1.0.0",
+  "description": "A utility to install/update modpacks",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "lint": "npx eslint . --ext .js,.html || true",
+    "lint-fix": "npx eslint --fix . --ext .js,.html || true",
+    "build": "npx electron-packager . mod-tool --platform=win32 --arch=x64 --ignore=/build/ --out=build --overwrite && npx electron-packager . mod-tool --platform=darwin --arch=x64 --ignore=/build/ --out=build --overwrite"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Smiley43210",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^5.0.6",
+    "electron-packager": "^14.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-html": "^6.0.0"
+  },
+  "dependencies": {
+    "del": "^5.0.0",
+    "request": "^2.88.0",
+    "request-progress": "^3.0.0",
+    "slash": "^3.0.0"
+  }
+}

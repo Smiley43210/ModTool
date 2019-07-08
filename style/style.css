@@ -1,0 +1,66 @@
+html, input, select, button {
+	font-family: "Roboto", Helvetica, "Times New Roman", sans-serif;
+	user-select: none;
+}
+
+body {
+	margin: 0;
+	color: #fff;
+	font-weight: 300;
+}
+
+main {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+}
+
+h1 {
+	margin: 0;
+	padding: 10px 0;
+	font-size: 1.2em;
+	font-weight: 500;
+}
+
+a {
+	color: var(--mdc-theme-accent) !important;
+}
+
+.sidebar {
+	width: 200px;
+	background: #212121;
+}
+
+.sidebar header {
+	padding: 0 10px;
+/*	background: #8021f3;*/
+}
+
+.sidebar .item {
+	padding: 10px;
+	border-bottom: 1px solid #424242;
+	cursor: default;
+}
+
+.sidebar .item:last-child {
+/*	border-bottom: none;*/
+}
+
+.sidebar .item:hover {
+	background: #e6510017;
+}
+
+.sidebar .item.selected {
+	background: #e651007a;
+}
+
+.sidebar .item .version {
+	color: #ffffffad;
+	font-size: 0.85em;
+}
+
+.content {
+	flex: 1;
+	padding: 0 10px;
+	background: #292929;
+}

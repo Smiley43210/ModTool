@@ -1,0 +1,22 @@
+/* MDC Overrides */
+:root {
+	--mdc-theme-primary: #424242;
+	--mdc-theme-accent: #e65100;
+}
+
+/* Color the input labels using the theme color */
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label,
+.mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-floating-label {
+	opacity: 0.87;
+	color: var(--mdc-theme-primary);
+}
+
+/* Change the disabled button text color */
+.mdc-button--raised:disabled, .mdc-button--unelevated:disabled {
+	color: rgba(255,255,255,.37);
+}
+
+/* Add a new class to color buttons using the accent color */
+.mdc-button--raised:not(:disabled).mdc-button--accent {
+	background-color: var(--mdc-theme-accent);
+}
