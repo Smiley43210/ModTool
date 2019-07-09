@@ -31,7 +31,7 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 		data.profiles.treeline = {
 			gameDir: packDirectory,
 			icon: packData.profile.icon,
-			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120`,
+			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
 			lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
 			lastVersionId: `${packData.minecraftVersion}-forge${packData.forgeVersion}`,
 			name: packData.name,
@@ -154,6 +154,18 @@ function downloadMods(type, mods, modsDirectory, downloadDirectory, progressElem
 	});
 }
 
+function getJSON(url) {
+	return new Promise((resolve, reject) => {
+		request(url, { json: true }, (error, response, data) => {
+			if (error) {
+				reject(error);
+			}
+
+			resolve(data);
+		});
+	});
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
 	let baseDirectory = process.env.APPDATA || (process.platform == 'darwin' ? path.join(process.env.HOME, 'Library', 'Application Support') : path.join(process.env.HOME, '.local', 'share'));
 	let installDirectory = path.join(baseDirectory, `${(process.platform == 'win32' ? '.' : '')}minecraft`);
@@ -166,7 +178,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let packServerInstallElement = document.getElementById('pack-install-server');
 	let progressGroupElement = document.getElementById('progress');
 	let progressElement = document.getElementById('progress-main');
-	let packs = await fs.promises.readdir(Directory.PACKS);
+//	let packs = JSON.parse(await fs.promises.readFile(path.join(Directory.PACKS, 'index.json')));
+	let packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/index.json');
 	
 	let selectedPackElement = null;
 	let selectedPack = null;
@@ -175,7 +188,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	{
 		let newPacks = new Map();
 		for (let pack of packs) {
-			let packData = JSON.parse(await fs.promises.readFile(path.join(Directory.PACKS, pack), {encoding: 'utf8'}));
+			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/${pack}.json`);
+//			let packData = JSON.parse(await fs.promises.readFile(path.join(Directory.PACKS, `${pack}.json`), {encoding: 'utf8'}));
 			
 			// Convert mods object to a Map
 			let newMods = new Map();
@@ -206,6 +220,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 		packs = newPacks;
 	}
+	console.log(packs);
+	
+	packNameElement.innerText = 'Select a Modpack';
 	
 	// Show install directory
 	installDirElement.innerText = installDirectory;
@@ -281,6 +298,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 			_.createHTML(`<div>ATTENTION: Manual mod download required: <a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
 		}
 		
+		// Delete temporary download directory
+		await del(slash(path.join(downloadDirectory, '**')), {force: true});
+		
 		packClientInstallElement.removeAttribute('disabled');
 		packClientInstallElement.innerText = 'Install Pack for Client';
 	});
@@ -314,6 +334,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 		for (let mod of filteredMods.manual) {
 			_.createHTML(`<div>ATTENTION: Manual mod download required: <a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
 		}
+		
+		// Delete temporary download directory
+		await del(slash(path.join(downloadDirectory, '**')), {force: true});
 		
 		packServerInstallElement.removeAttribute('disabled');
 		packServerInstallElement.innerText = 'Install Pack for Server';

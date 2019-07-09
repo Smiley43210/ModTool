@@ -135,18 +135,20 @@
 			</div>
 			<div class='content'>
 				<div>
-					<h1 id='pack-name'>Select a Modpack</h1>
+					<h1 id='pack-name'>Loading...</h1>
 					<div>Minecraft installation:</div>
 					<span id='install-dir'></span>
-					<button id='install-change' class='mdc-button mdc-button--raised' style='margin-left: 15px;'>
+					<button id='install-change' class='mdc-button mdc-button--raised' style='margin-left: 5px;'>
 						<span class='mdc-button__label'>Change...</span>
 					</button>
-					<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%; margin-top: 10px;'>
-						<span class='mdc-button__label'>Install Pack for Client</span>
-					</button>
-					<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%; margin-top: 10px;'>
-						<span class='mdc-button__label'>Install Pack for Server</span>
-					</button>
+					<div style='display: flex;'>
+						<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; flex: 1; margin-top: 10px; margin-right: 5px;'>
+							<span class='mdc-button__label'>Install Client</span>
+						</button>
+						<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; flex: 1; margin-top: 10px; margin-left: 5px;'>
+							<span class='mdc-button__label'>Install Server</span>
+						</button>
+					</div>
 					<div id='progress' style='display: none;'>
 						<progress-element id='progress-main'></progress-element>
 					</div>

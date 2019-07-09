@@ -7,7 +7,7 @@
     "start": "electron .",
     "lint": "npx eslint . --ext .js,.html || true",
     "lint-fix": "npx eslint --fix . --ext .js,.html || true",
-    "build": "npx electron-packager . mod-tool --platform=win32 --arch=x64 --ignore=/build/ --out=build --overwrite && npx electron-packager . mod-tool --platform=darwin --arch=x64 --ignore=/build/ --out=build --overwrite"
+    "build": "npx electron-packager . mod-tool --platform=win32 --arch=x64 --ignore=/dist/ --out=dist --overwrite && npx electron-packager . mod-tool --platform=darwin --arch=x64 --ignore=/dist/ --out=dist --overwrite"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [

@@ -314,6 +314,12 @@
 			"type": "mod",
 			"target": "server",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/randompatches/download/2735698/file"
+		},
+		"tree-chopper": {
+			"name": "Tree Chopper",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/tree-chopper/download/2492770/file"
 		}
 	}
 }
