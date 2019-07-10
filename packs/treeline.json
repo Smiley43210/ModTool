@@ -320,6 +320,12 @@
 			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/tree-chopper/download/2492770/file"
+		},
+		"inventory-tweaks": {
+			"name": "Inventory Tweaks",
+			"type": "mod",
+			"target": "client",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/inventory-tweaks/download/2670367/file"
 		}
 	}
 }
