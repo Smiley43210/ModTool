@@ -44,34 +44,52 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 	});
 }
 
-function downloadFile(url, destinationDirectory, progressCallback) {
-	return new Promise((resolve, reject) => {
-		let fileRequest = progress(request(url), {throttle: 100}).on('progress', (state) => {
-			if (progressCallback) {
-				progressCallback(state);
-			}
-		}).on('error', (error) => {
-			console.log('Network error');
-			reject();
-		}).on('response', (response) => {
-			if (response.statusCode !== 200) {
-				console.log('Non 200 status code');
-				reject();
-				
-				return;
-			}
+function downloadFile(url, destinationDirectory, infoCallback, progressCallback) {
+	let infoCalled = false;
+	
+	return new Promise(async (resolve) => {
+		while (true) {
+			try {
+				progressCallback({percent: null});
+				let promise = new Promise((attemptResolve, reject) => {
+					let fileRequest = progress(request(url), {throttle: 50}).on('progress', (state) => {
+						if (progressCallback) {
+							progressCallback(state);
+						}
+					}).on('error', (error) => {
+						console.log('Network error', url);
+						reject();
+					}).on('response', (response) => {
+						if (response.statusCode !== 200) {
+							console.log('Non 200 status code', url);
+							reject();
 
-			let fileName = path.parse(fileRequest.uri.href).base;
-			let downloadPath = path.join(destinationDirectory, fileName);
+							return;
+						}
 
-			console.log(`Downloading ${url}`);
-			fileRequest.pipe(fs.createWriteStream(downloadPath)).on('finish', () => {
+						let fileName = path.parse(fileRequest.uri.href).base;
+						let downloadPath = path.join(destinationDirectory, fileName);
+						
+						if (!infoCalled && infoCallback) {
+							infoCallback(fileRequest, fileName);
+						}
+
+						console.log(`Receiving ${url}`);
+						fileRequest.pipe(fs.createWriteStream(downloadPath)).on('finish', () => {
+							attemptResolve(fileName);
+						}).on('error', (error) => {
+							console.log('Pipe error', url);
+							reject();
+						});
+					});
+				});
+				let fileName = await promise;
 				resolve(fileName);
-			}).on('error', (error) => {
-				console.log("Pipe error");
-				reject();
-			});
-		});
+				break;
+			} catch (error) {
+				// Do nothing
+			}
+		}
 	});
 }
 
@@ -97,32 +115,38 @@ function downloadMods(type, mods, modsDirectory, downloadDirectory, progressElem
 	let nextIndex = 0;
 	let downloadProgress = 0;
 	let progressElements = [];
+	let fileMap = new Map();
 	
 	progressElement.message = `Downloading mods... (0 of ${mods.size} complete)`;
 	
 	return new Promise((resolve) => {
-		function cleanup() {
-			for (let modProgressElement of progressElements) {
-				modProgressElement.remove();
-			}
-		}
-		
 		function downloadMod(mod, modProgressElement) {
 			return new Promise((modResolve) => {
-				modProgressElement.message = `Downloading ${mod.name}... (0%)`;
+				let aborted = false;
+				
+				modProgressElement.message = `Verifying ${mod.name}... (0%)`;
 				modProgressElement.value = null;
-				downloadFile(mod.url, downloadDirectory, (state) => {
-					modProgressElement.message = `Downloading ${mod.name}... (${(state.percent * 100).toFixed()}%)`;
+				downloadFile(mod.url, downloadDirectory, (fileRequest, fileName) => {
+					fileMap.set(mod.id, fileName);
+					// Don't download if the mod is already installed locally
+					if (fs.existsSync(path.join(modsDirectory, fileName))) {
+						aborted = true;
+						fileRequest.abort();
+					}
+				}, (state) => {
+					modProgressElement.message = `${state.percent === null ? 'Verifying' : 'Downloading'} ${mod.name}... (${(state.percent * 100).toFixed()}%)`;
 					modProgressElement.value = state.percent;
 				}).then(async (fileName) => {
-					let downloadPath = path.join(downloadDirectory, fileName);
-					let destinationPath = path.join(modsDirectory, fileName);
-					await fs.promises.rename(downloadPath, destinationPath);
+					if (!aborted) {
+						let downloadPath = path.join(downloadDirectory, fileName);
+						let destinationPath = path.join(modsDirectory, fileName);
+						await fs.promises.rename(downloadPath, destinationPath);
+					}
 					progressElement.value = ++downloadProgress / mods.size;
 					progressElement.message = `Downloading mods... (${downloadProgress} of ${mods.size} complete)`;
+					
 					if (downloadProgress == mods.size) {
-						cleanup();
-						resolve();
+						resolve(fileMap);
 					}
 					
 					modResolve();
@@ -149,6 +173,8 @@ function downloadMods(type, mods, modsDirectory, downloadDirectory, progressElem
 						await downloadMod(mod, modProgressElement);
 					}
 				}
+				
+				modProgressElement.remove();
 			})();
 		}
 	});
@@ -156,7 +182,7 @@ function downloadMods(type, mods, modsDirectory, downloadDirectory, progressElem
 
 function getJSON(url) {
 	return new Promise((resolve, reject) => {
-		request(url, { json: true }, (error, response, data) => {
+		request(url, {json: true}, (error, response, data) => {
 			if (error) {
 				reject(error);
 			}
@@ -178,8 +204,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let packServerInstallElement = document.getElementById('pack-install-server');
 	let progressGroupElement = document.getElementById('progress');
 	let progressElement = document.getElementById('progress-main');
-//	let packs = JSON.parse(await fs.promises.readFile(path.join(Directory.PACKS, 'index.json')));
-	let packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/index.json');
+	let debugElement = document.getElementById('debug');
+	
+	let packs;
+	while (true) {
+		try {
+			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/index.json');
+			break;
+		} catch (error) {
+			// Do nothing
+		}
+	}
 	
 	let selectedPackElement = null;
 	let selectedPack = null;
@@ -189,13 +224,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 		let newPacks = new Map();
 		for (let pack of packs) {
 			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/${pack}.json`);
-//			let packData = JSON.parse(await fs.promises.readFile(path.join(Directory.PACKS, `${pack}.json`), {encoding: 'utf8'}));
 			
 			// Convert mods object to a Map
 			let newMods = new Map();
 			for (let mod in packData.mods) {
 				if (packData.mods.hasOwnProperty(mod)) {
-					newMods.set(mod, packData.mods[mod]);
+					let modObject = packData.mods[mod];
+					modObject.id = mod;
+					newMods.set(mod, modObject);
 				}
 			}
 			packData.mods = newMods;
@@ -220,7 +256,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 		packs = newPacks;
 	}
-	console.log(packs);
 	
 	packNameElement.innerText = 'Select a Modpack';
 	
@@ -233,15 +268,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 		
 		packClientInstallElement.setAttribute('disabled', '');
+		packServerInstallElement.setAttribute('disabled', '');
 		packClientInstallElement.innerText = 'Installing Client Pack...';
 		
 		let packData = packs.get(selectedPack);
 		let packDirectory = path.join(installDirectory, 'modpack', packData.name);
 		let modsDirectory = path.join(packDirectory, 'mods');
 		let downloadDirectory = path.join(modsDirectory, 'downloading');
-		
-		// Empty mods directory
-		await del(slash(path.join(modsDirectory, '**')), {force: true});
 		
 		// Create subdirectory
 		fs.promises.mkdir(downloadDirectory, {recursive: true});
@@ -250,35 +283,40 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Download and install forge
 		progressElement.message = 'Downloading Minecraft Forge...';
-		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.forgeVersion}/forge-${packData.forgeVersion}-installer${process.platform == 'win32' ? '-win.exe' : '.jar'}`, downloadDirectory, (state) => {
+		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.forgeVersion}/forge-${packData.forgeVersion}-installer${process.platform == 'win32' ? '-win.exe' : '.jar'}`, downloadDirectory, null, (state) => {
 			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
 			progressElement.value = state.percent;
-		}).then((fileName) => {
-			return new Promise((resolve, reject) => {
-				let filePath = path.join(downloadDirectory, fileName);
-				
-				progressElement.value = null;
-				progressElement.message = '<div>Installing Minecraft Forge...</div><div>An installer will appear. Choose "Install client" and follow the prompts.</div>';
-				if (process.platform == 'win32') {
-					childProcess.execFile(filePath, (error) => {
-						if (error) {
-							console.log('Error installing Minecraft Forge');
-							reject(error);
+		}).then(async (fileName) => {
+			let filePath = path.join(downloadDirectory, fileName);
+			
+			progressElement.value = null;
+			progressElement.message = '<div>Installing Minecraft Forge...</div><div>An installer will appear. Choose "Install client" and follow the prompts.</div>';
+			while (true) {
+				try {
+					await new Promise((resolve, reject) => {
+						if (process.platform == 'win32') {
+							childProcess.execFile(filePath, (error) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve();
+								}
+							});
 						} else {
-							resolve();
+							childProcess.exec(`/usr/bin/java -jar "${filePath}"`, (error) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve();
+								}
+							});
 						}
 					});
-				} else {
-					childProcess.exec(`/usr/bin/java -jar "${filePath}"`, (error) => {
-						if (error) {
-							console.log('Error installing Minecraft Forge');
-							reject(error);
-						} else {
-							resolve();
-						}
-					});
+					break;
+				} catch (error) {
+					console.log('Error installing Minecraft Forge');
 				}
-			});
+			}
 		});
 		
 		progressElement.message = 'Modifying profile...';
@@ -288,20 +326,56 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Import options
 		await fs.promises.copyFile(path.join(installDirectory, 'options.txt'), path.join(packDirectory, 'options.txt'));
+		
 		// Separate manual mods
 		let filteredMods = filterMods('client', packData);
+		
 		// Download mods
-		await downloadMods('client', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
+		let downloadMap = await downloadMods('client', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
 		progressElement.message = 'Modpack installation complete!';
+		
+		// Cleanup mods
+		// FIXME: Will not work for manual mods like 'mekanism' and 'mekanism-generators'
+		let files = fs.readdirSync(modsDirectory);
+		let mappedFiles = Array.from(downloadMap.values());
+		let installedManualMods = [];
+		for (let file of files) {
+			if (mappedFiles.indexOf(file) == -1) {
+				let found = false;
+				
+				for (let mod of filteredMods.manual) {
+					if (file.toLocaleLowerCase().indexOf(mod.id.toLocaleLowerCase()) > -1) {
+						found = true;
+						installedManualMods.push(mod.id);
+						break;
+					}
+				}
+				
+				if (!found) {
+					console.log(`File ${file} not part of modpack`);
+					await del(slash(path.join(modsDirectory, file)), {force: true});
+				}
+			}
+		}
+		
 		// Show manual mods
-		for (let mod of filteredMods.manual) {
-			_.createHTML(`<div>ATTENTION: Manual mod download required: <a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+		if (filteredMods.manual.length > installedManualMods.length) {
+			let message = _.createHTML(`<div><div>ATTENTION</div><div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} must be downloaded manually. Click on each of the links below, download the mod, and place the jar file into the mods folder.</div><button class='mdc-button mdc-button--raised' style='margin: 10px 0;'><span class='mdc-button__label'>Open Mods Folder</span></button></div>`, progressGroupElement);
+			message.querySelector('button').addEventListener('click', () => {
+				ipcRenderer.send('show-folder', `${modsDirectory}${path.sep}`);
+			});
+			for (let mod of filteredMods.manual) {
+				if (installedManualMods.indexOf(mod.id) == -1) {
+					_.createHTML(`<div><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+				}
+			}
 		}
 		
 		// Delete temporary download directory
 		await del(slash(path.join(downloadDirectory, '**')), {force: true});
 		
 		packClientInstallElement.removeAttribute('disabled');
+		packServerInstallElement.removeAttribute('disabled');
 		packClientInstallElement.innerText = 'Install Pack for Client';
 	});
 	
@@ -310,15 +384,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 			return;
 		}
 		
+		packClientInstallElement.setAttribute('disabled', '');
 		packServerInstallElement.setAttribute('disabled', '');
 		packServerInstallElement.innerText = 'Installing Server Pack...';
 		
 		let packData = packs.get(selectedPack);
 		let modsDirectory = path.join(installDirectory, 'mods');
 		let downloadDirectory = path.join(modsDirectory, 'downloading');
-		
-		// Empty mods directory
-		await del(slash(path.join(modsDirectory, '**')), {force: true});
 		
 		// Create subdirectory
 		fs.promises.mkdir(downloadDirectory, {recursive: true});
@@ -327,17 +399,52 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Separate manual mods
 		let filteredMods = filterMods('server', packData);
+		
 		// Download mods
-		await downloadMods('server', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
+		let downloadMap = await downloadMods('server', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
 		progressElement.message = 'Modpack installation complete!';
+		
+		// Cleanup mods
+		// FIXME: Will not work for manual mods like 'mekanism' and 'mekanism-generators'
+		let files = fs.readdirSync(modsDirectory);
+		let mappedFiles = Array.from(downloadMap.values());
+		let installedManualMods = [];
+		for (let file of files) {
+			if (mappedFiles.indexOf(file) == -1) {
+				let found = false;
+				
+				for (let mod of filteredMods.manual) {
+					if (file.toLocaleLowerCase().indexOf(mod.id.toLocaleLowerCase()) > -1) {
+						found = true;
+						installedManualMods.push(mod.id);
+						break;
+					}
+				}
+				
+				if (!found) {
+					console.log(`File ${file} not part of modpack`);
+					await del(slash(path.join(modsDirectory, file)), {force: true});
+				}
+			}
+		}
+		
 		// Show manual mods
-		for (let mod of filteredMods.manual) {
-			_.createHTML(`<div>ATTENTION: Manual mod download required: <a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+		if (filteredMods.manual.length > installedManualMods.length) {
+			let message = _.createHTML(`<div><div>ATTENTION</div><div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} must be downloaded manually. Click on each of the links below, download the mod, and place the jar file into the mods folder.</div><button class='mdc-button mdc-button--raised' style='margin: 10px 0;'><span class='mdc-button__label'>Open Mods Folder</span></button></div>`, progressGroupElement);
+			message.querySelector('button').addEventListener('click', () => {
+				ipcRenderer.send('show-folder', `${modsDirectory}${path.sep}`);
+			});
+			for (let mod of filteredMods.manual) {
+				if (installedManualMods.indexOf(mod.id) == -1) {
+					_.createHTML(`<div><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+				}
+			}
 		}
 		
 		// Delete temporary download directory
 		await del(slash(path.join(downloadDirectory, '**')), {force: true});
 		
+		packClientInstallElement.removeAttribute('disabled');
 		packServerInstallElement.removeAttribute('disabled');
 		packServerInstallElement.innerText = 'Install Pack for Server';
 	});
@@ -351,13 +458,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 	});
 	
+	debugElement.addEventListener('click', () => {
+		ipcRenderer.send('open-devtools');
+	});
+	
 	// Open all links in external browser
 	document.addEventListener('click', (event) => {
 		if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
 			event.preventDefault();
 			shell.openExternal(event.target.href);
 		}
-	})
+	});
 });
 
 const _setImmediate = setImmediate;

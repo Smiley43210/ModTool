@@ -1,0 +1,106 @@
+{
+  "title": "Modpack",
+  "type": "object",
+  "required": [
+    "name",
+    "minecraftVersion",
+    "forgeVersion",
+    "ram",
+    "profile",
+    "mods"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Modpack name",
+      "minLength": 1
+    },
+    "minecraftVersion": {
+      "type": "string"
+    },
+    "forgeVersion": {
+      "type": "string"
+    },
+    "ram": {
+      "type": "object",
+      "format": "grid",
+      "required": [
+        "preferred",
+        "minimum",
+        "maximum"
+      ],
+      "properties": {
+        "preferred": {
+          "type": "integer"
+        },
+        "minimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "required": [
+        "icon"
+      ],
+      "properties": {
+        "icon": {
+          "type": "string"
+        }
+      }
+    },
+    "mods": {
+      "type": "object",
+      "format": "table",
+      "title": "Mods",
+      "uniqueItems": true,
+      "patternProperties": {
+        "^[\\w\\d-]+$": {
+          "type": "object",
+          "title": "Mod",
+          "required": [
+            "name",
+            "type",
+            "target",
+            "url"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "mod",
+                "dependency"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "client",
+                "server",
+                "both"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "manual": {
+              "type": "boolean"
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

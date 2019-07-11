@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, shell} = require('electron');
 const path = require('path');
 const {ipcMain, dialog} = require('electron');
 
@@ -22,9 +22,6 @@ function createWindow() {
 	// and load the index.html of the app.
 	mainWindow.loadFile('index.html');
 
-	// Open the DevTools.
-//	 mainWindow.webContents.openDevTools()
-
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
 		// Dereference the window object, usually you would store windows
@@ -45,6 +42,14 @@ app.on('ready', () => {
 			defaultPath,
 			properties: ['openDirectory']
 		});
+	});
+	
+	ipcMain.on('show-folder', (event, openPath) => {
+		shell.openItem(openPath);
+	});
+	
+	ipcMain.on('open-devtools', (event) => {
+		mainWindow.webContents.openDevTools();
 	});
 });
 
