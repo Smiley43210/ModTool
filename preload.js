@@ -325,7 +325,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 		updateProfile(installDirectory, packDirectory, packData);
 		
 		// Import options
-		await fs.promises.copyFile(path.join(installDirectory, 'options.txt'), path.join(packDirectory, 'options.txt'));
+		if (!fs.existsSync(path.join(packDirectory, 'options.txt'))) {
+			await fs.promises.copyFile(path.join(installDirectory, 'options.txt'), path.join(packDirectory, 'options.txt'));
+		}
 		
 		// Separate manual mods
 		let filteredMods = filterMods('client', packData);
