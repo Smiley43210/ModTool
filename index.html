@@ -142,12 +142,18 @@
 						<span class='mdc-button__label'>Change...</span>
 					</button>
 					<div style='display: flex;'>
-						<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; flex: 1; margin-top: 10px; margin-right: 5px;'>
-							<span class='mdc-button__label'>Install Client</span>
-						</button>
-						<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; flex: 1; margin-top: 10px; margin-left: 5px;'>
-							<span class='mdc-button__label'>Install Server</span>
-						</button>
+						<div style="flex: 1; margin-top: 10px; margin-right: 5px;">
+							<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%;'>
+								<span class='mdc-button__label'>Install Client</span>
+							</button>
+							<div class='check' id='client-install-check'></div>
+						</div>
+						<div style="flex: 1; margin-top: 10px; margin-left: 5px;">
+							<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%;'>
+								<span class='mdc-button__label'>Install Server</span>
+							</button>
+							<div class='check' id='server-install-check'></div>
+						</div>
 					</div>
 					<div id='progress' style='display: none;'>
 						<progress-element id='progress-main'></progress-element>

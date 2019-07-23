@@ -64,3 +64,16 @@ a {
 	padding: 0 10px;
 	background: #292929;
 }
+
+.check {
+	margin-top: 10px;
+}
+
+.check .row {
+	display: flex;
+}
+
+.check .icon {
+	margin: auto 10px auto 0;
+	font-size: 16px;
+}
