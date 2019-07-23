@@ -1,5 +1,5 @@
 {
-  "name": "mc-mod-tool",
+  "name": "RedPack",
   "version": "1.0.0",
   "description": "A utility to install/update modpacks",
   "main": "main.js",
@@ -7,8 +7,8 @@
     "start": "electron .",
     "lint": "npx eslint . --ext .js,.html || true",
     "lint-fix": "npx eslint --fix . --ext .js,.html || true",
-    "build-win": "electron-packager . mod-tool --platform=win32 --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
-    "build-macos": "electron-packager . mod-tool --platform=darwin --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
+    "build-win": "electron-packager . --platform=win32 --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
+    "build-macos": "electron-packager . --platform=darwin --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
     "build": "npm run build-win && npm run build-macos"
   },
   "repository": "https://github.com/electron/electron-quick-start",
