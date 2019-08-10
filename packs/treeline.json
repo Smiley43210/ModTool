@@ -1,7 +1,10 @@
 {
 	"name": "treeline",
-	"minecraftVersion": "1.12.2",
-	"forgeVersion": "1.12.2-14.23.5.2838",
+	"description": "Community modpack 2019.",
+	"version": {
+		"minecraft": "1.12.2",
+		"forge": "1.12.2-14.23.5.2838"
+	},
 	"ram": {
 		"preferred": 4,
 		"minimum": 3,

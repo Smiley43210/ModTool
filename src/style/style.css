@@ -77,3 +77,21 @@ a {
 	margin: auto 10px auto 0;
 	font-size: 16px;
 }
+
+.group {
+	position: relative;
+	margin-top: 10px;
+	padding-top: 20px;
+}
+
+.group::after {
+	content: attr(data-label);
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 16px;
+	font-weight: 500;
+	text-transform: uppercase;
+}

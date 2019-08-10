@@ -33,7 +33,7 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 			icon: packData.profile.icon,
 			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
 			lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
-			lastVersionId: `${packData.minecraftVersion}-forge${packData.forgeVersion}`,
+			lastVersionId: `${packData.version.minecraft}-forge${packData.version.forge}`,
 			name: packData.name,
 			type: 'custom'
 		};
@@ -196,18 +196,24 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let baseDirectory = process.env.APPDATA || (process.platform == 'darwin' ? path.join(process.env.HOME, 'Library', 'Application Support') : path.join(process.env.HOME, '.local', 'share'));
 	let installDirectory = path.join(baseDirectory, `${(process.platform == 'win32' ? '.' : '')}minecraft`);
 	
-	let installDirElement = document.getElementById('install-dir');
-	let installDirChangeElement = document.getElementById('install-change');
 	let clientInstallCheck = document.getElementById('client-install-check');
 	let serverInstallCheck = document.getElementById('server-install-check');
 	let packSelectElement = document.getElementById('pack-select');
 	let packNameElement = document.getElementById('pack-name');
+	let packAboutElement = document.getElementById('pack-about');
+	let packDescriptionElement = document.getElementById('pack-description');
+	let packMCVersionElement = document.getElementById('pack-minecraft-version');
 	let packClientInstallElement = document.getElementById('pack-install-client');
 	let packServerInstallElement = document.getElementById('pack-install-server');
 	let progressGroupElement = document.getElementById('progress');
 	let progressElement = document.getElementById('progress-main');
+	let toggleAdvancedElement = document.getElementById('advanced-toggle');
+	let advancedSettingsElement = document.getElementById('advanced-settings');
+	let installDirElement = document.getElementById('install-dir');
+	let installDirChangeElement = document.getElementById('install-change');
 	let debugElement = document.getElementById('debug');
 	
+	let advancedShown = false;
 	let selectedPackElement = null;
 	let selectedPack = null;
 	let packs;
@@ -222,7 +228,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 				
 				if (selectedPack !== null) {
 					let packData = packs.get(selectedPack);
-					if (data.profiles.forge && data.profiles.forge.lastVersionId == `${packData.minecraftVersion}-forge${packData.forgeVersion}`) {
+					if (data.profiles.forge && data.profiles.forge.lastVersionId == `${packData.version.minecraft}-forge${packData.version.forge}`) {
 						value.forgeInstalled = true;
 					} else {
 						value.forgeInstalled = false;
@@ -265,6 +271,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 		_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>No prerequisites.</div>`, serverInstallCheck);
 	}
 	
+	function showPackInfo(packData) {
+		packAboutElement.style.display = '';
+		packNameElement.innerText = packData.name;
+		packDescriptionElement.innerText = packData.description;
+		packMCVersionElement.innerText = packData.version.minecraft;
+	}
+	
 	while (true) {
 		try {
 			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/index.json');
@@ -293,7 +306,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 			
 			newPacks.set(pack, packData);
 			
-			let packItem = _.createHTML(`<div class='item'><div class='title'>${packData.name}</div><div class='version'>Minecraft ${packData.minecraftVersion}</div></div>`, packSelectElement);
+			let packItem = _.createHTML(`<div class='item'><div class='title'>${packData.name}</div><div class='version'>Minecraft ${packData.version.minecraft}</div></div>`, packSelectElement);
 
 			packItem.addEventListener('click', () => {
 				if (selectedPackElement) {
@@ -303,8 +316,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 				packItem.classList.add('selected');
 				selectedPackElement = packItem;
 				selectedPack = pack;
+				
+				showPackInfo(packData);
 
-				packNameElement.innerText = packData.name;
 				packClientInstallElement.removeAttribute('disabled');
 				packServerInstallElement.removeAttribute('disabled');
 				
@@ -345,7 +359,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		if (!validityData.forgeInstalled) {
 			// Download and install forge
 			progressElement.message = 'Downloading Minecraft Forge...';
-			await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.forgeVersion}/forge-${packData.forgeVersion}-installer${process.platform == 'win32' ? '-win.exe' : '.jar'}`, downloadDirectory, null, (state) => {
+			await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer${process.platform == 'win32' ? '-win.exe' : '.jar'}`, downloadDirectory, null, (state) => {
 				progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
 				progressElement.value = state.percent;
 			}).then(async (fileName) => {
@@ -512,6 +526,20 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packClientInstallElement.removeAttribute('disabled');
 		packServerInstallElement.removeAttribute('disabled');
 		packServerInstallElement.innerText = 'Install Server';
+	});
+	
+	toggleAdvancedElement.addEventListener('click', () => {
+		advancedShown = !advancedShown;
+		
+		if (advancedShown) {
+			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Hide Advanced Settings';
+			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_up';
+			advancedSettingsElement.style.display = '';
+		} else {
+			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Show Advanced Settings';
+			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_down';
+			advancedSettingsElement.style.display = 'none';
+		}
 	});
 	
 	installDirChangeElement.addEventListener('click', async () => {

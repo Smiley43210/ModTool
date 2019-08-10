@@ -3,8 +3,7 @@
   "type": "object",
   "required": [
     "name",
-    "minecraftVersion",
-    "forgeVersion",
+    "version",
     "ram",
     "profile",
     "mods"
@@ -15,11 +14,24 @@
       "description": "Modpack name",
       "minLength": 1
     },
-    "minecraftVersion": {
+    "description": {
       "type": "string"
     },
-    "forgeVersion": {
-      "type": "string"
+    "version": {
+      "type": "object",
+      "title": "The Version Schema",
+      "required": [
+        "minecraft",
+        "forge"
+      ],
+      "properties": {
+        "minecraft": {
+          "type": "string"
+        },
+        "forge": {
+          "type": "string"
+        }
+      }
     },
     "ram": {
       "type": "object",
