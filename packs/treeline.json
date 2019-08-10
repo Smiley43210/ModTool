@@ -18,7 +18,7 @@
 			"name": "Applied Energistics 2",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2/download/2652453/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2/download/2747063/file"
 		},
 		"baubles": {
 			"name": "Baubles",
@@ -117,7 +117,7 @@
 			"name": "GraveStone Mod",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/gravestone-mod/download/2608278/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/gravestone-mod/download/2744766/file"
 		},
 		"guide-api": {
 			"name": "Guide-API",
@@ -141,31 +141,31 @@
 			"name": "Industrial Craft",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/industrial-craft/download/2728635/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/industrial-craft/download/2755280/file"
 		},
 		"iron-chests": {
 			"name": "Iron Chests",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/iron-chests/download/2723143/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/iron-chests/download/2747935/file"
 		},
 		"jei": {
 			"name": "Just Enough Items (JEI)",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/jei/download/2733488/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/jei/download/2739588/file"
 		},
 		"journeymap": {
 			"name": "JourneyMap",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/journeymap/download/2736523/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/journeymap/download/2755458/file"
 		},
 		"jurassicraft": {
 			"name": "JurassiCraft",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/jurassicraft/download/2672153/file",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/jurassicraft/download/2741623/file",
 			"dependencies": [
 				"llibrary"
 			]
@@ -180,13 +180,13 @@
 			"name": "Mekanism",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism/download/2736277/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism/download/2755008/file"
 		},
 		"mekanism-generators": {
 			"name": "Mekanism Generators",
 			"type": "dependency",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism-generators/download/2736279/file",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism-generators/download/2755010/file",
 			"dependencies": [
 				"mekanism"
 			]
@@ -195,7 +195,7 @@
 			"name": "MrCrayfish's Gun Mod",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/mrcrayfishs-gun-mod/download/2716006/file",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/mrcrayfishs-gun-mod/download/2750645/file",
 			"dependencies": [
 				"obfuscate"
 			]
@@ -226,7 +226,7 @@
 			"name": "Pam's HarvestCraft",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/pams-harvestcraft/download/2717443/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/pams-harvestcraft/download/2751199/file"
 		},
 		"ptrlib": {
 			"name": "PTRLib",
@@ -316,7 +316,7 @@
 			"name": "RandomPatches",
 			"type": "mod",
 			"target": "server",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/randompatches/download/2735698/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/randompatches/download/2742950/file"
 		},
 		"tree-chopper": {
 			"name": "Tree Chopper",
@@ -329,6 +329,18 @@
 			"type": "mod",
 			"target": "client",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/inventory-tweaks/download/2670367/file"
+		},
+		"more-overlays": {
+			"name": "More Overlays",
+			"type": "mod",
+			"target": "client",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/more-overlays/download/2745657/file"
+		},
+		"colorutility": {
+			"name": "ColorUtility",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/colorutility/download/2440182/file"
 		}
 	}
 }
