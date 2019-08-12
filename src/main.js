@@ -108,8 +108,8 @@ function createWindow() {
 app.on('ready', createWindow);
 app.on('ready', () => {
 	ipcMain.on('folder-select', (event, defaultPath) => {
-		event.returnValue = dialog.showOpenDialog(mainWindow, {
-			title: 'Locate your Minecraft install directory...',
+		event.returnValue = dialog.showOpenDialogSync(mainWindow, {
+			title: 'Locate your Minecraft installation directory...',
 			defaultPath,
 			properties: ['openDirectory']
 		});
