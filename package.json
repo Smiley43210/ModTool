@@ -7,11 +7,9 @@
     "start": "electron-forge start",
     "lint": "npx eslint . --ext .js,.html || true",
     "lint-fix": "npx eslint --fix . --ext .js,.html || true",
-    "build-win": "electron-packager . --platform=win32 --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
-    "build-macos": "electron-packager . --platform=darwin --arch=x64 --ignore=\"^/dist/\" --out=dist --overwrite",
-    "build": "npm run build-win && npm run build-macos",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
   "repository": "https://github.com/Smiley43210/RedPack",
   "keywords": [
