@@ -28,7 +28,7 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 	await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}).then((data) => {
 		data = JSON.parse(data);
 		
-		data.profiles.treeline = {
+		data.profiles[packData.id] = {
 			gameDir: packDirectory,
 			icon: packData.profile.icon,
 			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
@@ -292,6 +292,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		let newPacks = new Map();
 		for (let pack of packs) {
 			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/${pack}.json`);
+			packData.id = pack;
 			
 			// Convert mods object to a Map
 			let newMods = new Map();
@@ -344,7 +345,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packClientInstallElement.innerText = 'Installing Client...';
 		
 		let packData = packs.get(selectedPack);
-		let packDirectory = path.join(installDirectory, 'modpack', packData.name);
+		let packDirectory = path.join(installDirectory, 'modpack', packData.id);
 		let modsDirectory = path.join(packDirectory, 'mods');
 		let downloadDirectory = path.join(modsDirectory, 'downloading');
 		
