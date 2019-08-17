@@ -1,6 +1,6 @@
 {
-	"name": "Treeline",
-	"description": "Community modpack 2019.",
+	"name": "Skyline",
+	"description": "Expanded community modpack 2019.",
 	"version": {
 		"minecraft": "1.12.2",
 		"forge": "1.12.2-14.23.5.2838"
@@ -341,6 +341,48 @@
 			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/colorutility/download/2440182/file"
+		},
+		"computercraft": {
+			"name": "ComputerCraft",
+			"type": "mod",
+			"target": "both",
+			"url": "https://cc.crzd.me/maven/dan200/computercraft/ComputerCraft-SquidDev-CC-ComputerCraft-feature-get-blink/1.80pr1-build0/ComputerCraft-SquidDev-CC-ComputerCraft-feature-get-blink-1.80pr1-build0.jar"
+		},
+		"project-red-base": {
+			"name": "Project Red - Base",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-base/download/2745545/file"
+		},
+		"project-red-lighting": {
+			"name": "Project Red - Lighting",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-lighting/download/2745549/file"
+		},
+		"project-red-integration": {
+			"name": "Project Red - Integration",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-integration/download/2745548/file"
+		},
+		"project-red-fabrication": {
+			"name": "Project Red - Fabrication",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-fabrication/download/2745547/file"
+		},
+		"project-red-compat": {
+			"name": "Project Red - Compat",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-compat/download/2745546/file"
+		},
+		"astral-sorcery": {
+			"name": "Astral Sorcery",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery/download/2757379/file"
 		}
 	}
 }
