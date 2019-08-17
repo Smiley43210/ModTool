@@ -1,6 +1,6 @@
 {
   "name": "RedPack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility to install/update Minecraft modpacks",
   "main": "src/main.js",
   "scripts": {
