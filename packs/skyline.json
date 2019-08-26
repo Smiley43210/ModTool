@@ -395,6 +395,12 @@
 			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery/download/2757379/file"
+		},
+		"diet-hoppers": {
+			"name": "Diet Hoppers",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/diet-hoppers/download/2482543/file"
 		}
 	}
 }

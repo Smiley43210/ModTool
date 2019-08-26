@@ -353,6 +353,12 @@
 			"type": "mod",
 			"target": "client",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/reauth/download/2560638/file"
+		},
+		"diet-hoppers": {
+			"name": "Diet Hoppers",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/diet-hoppers/download/2482543/file"
 		}
 	}
 }
