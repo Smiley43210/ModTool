@@ -178,7 +178,7 @@
 		},
 		"mekanism-generators": {
 			"name": "Mekanism Generators",
-			"type": "dependency",
+			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/mekanism-generators/download/2755010/file",
 			"dependencies": [
@@ -248,7 +248,7 @@
 		},
 		"thermal-dynamics": {
 			"name": "Thermal Dynamics",
-			"type": "dependency",
+			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/thermal-dynamics/download/2716138/file",
 			"dependencies": [
@@ -258,7 +258,7 @@
 		},
 		"thermal-expansion": {
 			"name": "Thermal Expansion",
-			"type": "dependency",
+			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/thermal-expansion/download/2715789/file",
 			"dependencies": [
