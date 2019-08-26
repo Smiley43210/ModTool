@@ -170,21 +170,6 @@
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/journeymap/download/2755458/file"
 		},
-		"jurassicraft": {
-			"name": "JurassiCraft",
-			"type": "mod",
-			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/jurassicraft/download/2741623/file",
-			"dependencies": [
-				"llibrary"
-			]
-		},
-		"llibrary": {
-			"name": "LLibrary",
-			"type": "dependency",
-			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/llibrary/download/2704186/file"
-		},
 		"mekanism": {
 			"name": "Mekanism",
 			"type": "mod",
