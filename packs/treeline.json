@@ -107,6 +107,15 @@
 				"codechicken-lib-1-8"
 			]
 		},
+		"fossils": {
+			"name": "Fossils and Archeology Revival",
+			"type": "mod",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/fossils/download/2735683/file",
+			"dependencies": [
+				"llibrary"
+			]
+		},
 		"grappling-hook-mod": {
 			"name": "Grappling Hook Mod",
 			"type": "mod",
@@ -169,6 +178,12 @@
 			"type": "mod",
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/journeymap/download/2755458/file"
+		},
+		"llibrary": {
+			"name": "LLibrary",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/llibrary/download/2704186/file"
 		},
 		"mekanism": {
 			"name": "Mekanism",
