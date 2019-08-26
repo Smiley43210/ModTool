@@ -342,6 +342,12 @@
 			"target": "both",
 			"url": "https://www.curseforge.com/minecraft/mc-mods/colorutility/download/2440182/file"
 		},
+		"reauth": {
+			"name": "ReAuth",
+			"type": "mod",
+			"target": "client",
+			"url": "https://www.curseforge.com/minecraft/mc-mods/reauth/download/2560638/file"
+		},
 		"computercraft": {
 			"name": "ComputerCraft",
 			"type": "mod",
