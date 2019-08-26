@@ -61,6 +61,7 @@ a {
 
 .content {
 	flex: 1;
+	position: relative;
 	padding: 0 10px;
 	background: #292929;
 }
@@ -94,4 +95,14 @@ a {
 	font-size: 16px;
 	font-weight: 500;
 	text-transform: uppercase;
+}
+
+#version {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 3px 6px;
+	color: var(--mdc-theme-on-primary);
+	font-size: 0.7em;
+	background: var(--mdc-theme-primary);
 }

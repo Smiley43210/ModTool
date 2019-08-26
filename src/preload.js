@@ -211,12 +211,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let advancedSettingsElement = document.getElementById('advanced-settings');
 	let installDirElement = document.getElementById('install-dir');
 	let installDirChangeElement = document.getElementById('install-change');
+	let versionElement = document.getElementById('version');
 	let debugElement = document.getElementById('debug');
 	
 	let advancedShown = false;
 	let selectedPackElement = null;
 	let selectedPack = null;
 	let packs;
+	
+	// Display the version
+	versionElement.innerText = `v${ipcRenderer.sendSync('version')}`;
 	
 	async function validateInstallDirectory() {
 		let value = {};

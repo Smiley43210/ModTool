@@ -1,8 +1,7 @@
 require('update-electron-app')({updateInterval: '1 hour'});
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, shell} = require('electron');
+const {app, BrowserWindow, shell, ipcMain, dialog} = require('electron');
 const path = require('path');
-const {ipcMain, dialog} = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,8 +38,11 @@ if (require('electron-squirrel-startup')) {
 	// This method will be called when Electron has finished
 	// initialization and is ready to create browser windows.
 	// Some APIs can only be used after this event occurs.
-	app.on('ready', createWindow);
 	app.on('ready', () => {
+		ipcMain.on('version', (event) => {
+			event.returnValue = app.getVersion();
+		});
+
 		ipcMain.on('folder-select', (event, defaultPath) => {
 			event.returnValue = dialog.showOpenDialogSync(mainWindow, {
 				title: 'Locate your Minecraft installation directory...',
@@ -57,6 +59,7 @@ if (require('electron-squirrel-startup')) {
 			mainWindow.webContents.openDevTools();
 		});
 	});
+	app.on('ready', createWindow);
 
 	// Quit when all windows are closed.
 	app.on('window-all-closed', () => {
