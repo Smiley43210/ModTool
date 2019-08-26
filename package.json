@@ -28,13 +28,13 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.44",
     "@electron-forge/maker-zip": "^6.0.0-beta.44",
     "@electron-forge/publisher-github": "^6.0.0-beta.44",
-    "electron": "^6.0.2",
+    "electron": "^6.0.4",
     "eslint": "^5.16.0",
     "eslint-plugin-html": "^6.0.0"
   },
   "dependencies": {
     "@material/snackbar": "^3.1.0",
-    "del": "^5.0.0",
+    "del": "^5.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "request": "^2.88.0",
     "request-progress": "^3.0.0",
