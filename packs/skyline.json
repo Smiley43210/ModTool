@@ -364,37 +364,57 @@
 			"name": "Project Red - Base",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-base/download/2745545/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-base/download/2745545/file",
+			"dependencies": [
+				"mrtjpcore",
+				"codechicken-lib-1-8",
+				"forge-multipart-cbe"
+			]
 		},
 		"project-red-lighting": {
 			"name": "Project Red - Lighting",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-lighting/download/2745549/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-lighting/download/2745549/file",
+			"dependencies": [
+				"project-red-base"
+			]
 		},
 		"project-red-integration": {
 			"name": "Project Red - Integration",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-integration/download/2745548/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-integration/download/2745548/file",
+			"dependencies": [
+				"project-red-base"
+			]
 		},
 		"project-red-fabrication": {
 			"name": "Project Red - Fabrication",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-fabrication/download/2745547/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-fabrication/download/2745547/file",
+			"dependencies": [
+				"project-red-base"
+			]
 		},
 		"project-red-compat": {
 			"name": "Project Red - Compat",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-compat/download/2745546/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/project-red-compat/download/2745546/file",
+			"dependencies": [
+				"project-red-base"
+			]
 		},
 		"astral-sorcery": {
 			"name": "Astral Sorcery",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery/download/2757379/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery/download/2757379/file",
+			"dependencies": [
+				"baubles"
+			]
 		},
 		"diet-hoppers": {
 			"name": "Diet Hoppers",

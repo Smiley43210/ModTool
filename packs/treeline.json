@@ -159,7 +159,10 @@
 			"name": "Just Enough Resources (JER)",
 			"type": "mod",
 			"target": "both",
-			"url": "https://www.curseforge.com/minecraft/mc-mods/just-enough-resources-jer/download/2728585/file"
+			"url": "https://www.curseforge.com/minecraft/mc-mods/just-enough-resources-jer/download/2728585/file",
+			"dependencies": [
+				"jei"
+			]
 		},
 		"journeymap": {
 			"name": "JourneyMap",
