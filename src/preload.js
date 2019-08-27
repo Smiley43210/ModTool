@@ -284,7 +284,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	
 	while (true) {
 		try {
-			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/index.json');
+			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/index.json');
 			break;
 		} catch (error) {
 			// Do nothing
@@ -295,7 +295,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	{
 		let newPacks = new Map();
 		for (let pack of packs) {
-			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/mc-mod-tool/master/packs/${pack}.json`);
+			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/${pack}.json`);
 			packData.id = pack;
 			
 			// Convert mods object to a Map
