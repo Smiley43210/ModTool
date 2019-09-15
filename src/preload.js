@@ -10,6 +10,7 @@ const childProcess = require('child_process');
 const {ipcRenderer, shell} = require('electron');
 
 const DOWNLOAD_SLOTS = 3;
+let isBusy = false;
 
 const Directory = {};
 Directory.SELF = __dirname;
@@ -282,6 +283,20 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packMCVersionElement.innerText = packData.version.minecraft;
 	}
 	
+	function toggleAdvancedSettings(shouldShow) {
+		advancedShown = shouldShow !== undefined ? shouldShow : !advancedShown;
+		
+		if (advancedShown) {
+			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Hide Advanced Settings';
+			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_up';
+			advancedSettingsElement.style.display = '';
+		} else {
+			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Show Advanced Settings';
+			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_down';
+			advancedSettingsElement.style.display = 'none';
+		}
+	}
+	
 	while (true) {
 		try {
 			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/index.json');
@@ -314,6 +329,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 			let packItem = _.createHTML(`<div class='item'><div class='title'>${packData.name}</div><div class='version'>Minecraft ${packData.version.minecraft}</div></div>`, packSelectElement);
 
 			packItem.addEventListener('click', () => {
+				if (isBusy) {
+					return;
+				}
+				
 				if (selectedPackElement) {
 					selectedPackElement.classList.remove('selected');
 				}
@@ -344,6 +363,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 			return;
 		}
 		
+		isBusy = true;
+		toggleAdvancedSettings(false);
 		packClientInstallElement.setAttribute('disabled', '');
 		packServerInstallElement.setAttribute('disabled', '');
 		packClientInstallElement.innerText = 'Installing Client...';
@@ -461,6 +482,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packClientInstallElement.removeAttribute('disabled');
 		packServerInstallElement.removeAttribute('disabled');
 		packClientInstallElement.innerText = 'Install Client';
+		isBusy = false;
 	});
 	
 	packServerInstallElement.addEventListener('click', async () => {
@@ -468,6 +490,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 			return;
 		}
 		
+		isBusy = true;
+		toggleAdvancedSettings(false);
 		packClientInstallElement.setAttribute('disabled', '');
 		packServerInstallElement.setAttribute('disabled', '');
 		packServerInstallElement.innerText = 'Installing Server...';
@@ -531,20 +555,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packClientInstallElement.removeAttribute('disabled');
 		packServerInstallElement.removeAttribute('disabled');
 		packServerInstallElement.innerText = 'Install Server';
+		isBusy = false;
 	});
 	
 	toggleAdvancedElement.addEventListener('click', () => {
-		advancedShown = !advancedShown;
-		
-		if (advancedShown) {
-			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Hide Advanced Settings';
-			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_up';
-			advancedSettingsElement.style.display = '';
-		} else {
-			toggleAdvancedElement.querySelector('.mdc-button__label').innerText = 'Show Advanced Settings';
-			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_down';
-			advancedSettingsElement.style.display = 'none';
-		}
+		toggleAdvancedSettings();
 	});
 	
 	installDirChangeElement.addEventListener('click', async () => {
