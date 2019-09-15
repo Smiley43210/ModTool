@@ -43,7 +43,12 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "assets/redpack",
+        "ignore": [
+          "packs",
+        ]
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
