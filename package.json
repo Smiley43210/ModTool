@@ -47,6 +47,7 @@
         "icon": "assets/redpack",
         "ignore": [
           "packs",
+          "publish.bat"
         ]
       },
       "makers": [
