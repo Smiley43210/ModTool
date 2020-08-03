@@ -28,7 +28,7 @@ a {
 
 .sidebar {
 	width: 200px;
-	background: #212121;
+	background: #212125;
 }
 
 .sidebar header {
@@ -63,7 +63,7 @@ a {
 	flex: 1;
 	position: relative;
 	padding: 0 10px;
-	background: #292929;
+	background: #29292d;
 }
 
 .check {
