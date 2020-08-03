@@ -94,12 +94,12 @@ function downloadFile(url, destinationDirectory, infoCallback, progressCallback)
 	});
 }
 
-function filterMods(type, packData) {
+function filterMods(target, packData) {
 	let filteredMods = new Map();
 	let manualMods = [];
 	
 	for (let [id, mod] of packData.mods) {
-		if (mod.target === type || mod.target === 'both') {
+		if (mod.target === target || mod.target === 'both') {
 			if (mod.manual) {
 				manualMods.push(mod);
 			} else {
@@ -111,7 +111,7 @@ function filterMods(type, packData) {
 	return {automatic: filteredMods, manual: manualMods};
 }
 
-function downloadMods(type, mods, modsDirectory, downloadDirectory, progressElement) {
+function downloadMods(target, mods, modsDirectory, downloadDirectory, progressElement) {
 	let modKeys = Array.from(mods.keys());
 	let nextIndex = 0;
 	let downloadProgress = 0;
