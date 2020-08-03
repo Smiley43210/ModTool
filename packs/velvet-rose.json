@@ -1,0 +1,217 @@
+{
+	"name": "Velvet Rose",
+	"description": "Community modpack 2020.",
+	"version": {
+		"minecraft": "1.16.1",
+		"forge": "1.16.1-32.0.98"
+	},
+	"ram": {
+		"preferred": 4,
+		"minimum": 3,
+		"maximum": 6
+	},
+	"profile": {
+		"icon": "Redstone_Ore"
+	},
+	"mods": {
+		"botania": {
+			"name": "Botania",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/18/Botania-1.16-399.jar"
+		},
+		"mekanism": {
+			"name": "Mekanism",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/330/Mekanism-1.16.1-10.0.8.431.jar"
+		},
+		"mekanism-generators": {
+			"name": "Mekanism Generators",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/332/MekanismGenerators-1.16.1-10.0.8.431.jar"
+		},
+		"torchmaster": {
+			"name": "Torchmaster",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3017/969/torchmaster-2.3.1-alpha.jar"
+		},
+		"iron-chests": {
+			"name": "Iron Chests",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/2989/14/ironchest-1.16.1-11.0.1.jar"
+		},
+		"immersive-engineering": {
+			"name": "Immersive Engineering",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3008/326/ImmersiveEngineering-0.16-109.jar"
+		},
+		"applied-energistics-2": {
+			"name": "Applied Energistics 2",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3020/576/appliedenergistics2-8.0.0-alpha.1.jar"
+		},
+		"gravestone-mod": {
+			"name": "GraveStone Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3010/108/gravestone-1.16.1-1.0.5.jar"
+		},
+		"cooking-for-blockheads": {
+			"name": "Cooking for Blockheads",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/2998/692/CookingForBlockheads_1.16.1-9.0.0.jar"
+		},
+		"farming-for-blockheads": {
+			"name": "Farming for Blockheads",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3005/325/FarmingForBlockheads_1.16.1-7.0.1.jar"
+		},
+		"pams-harvestcraft-2-food-core": {
+			"name": "Pam's HarvestCraft 2 - Food Core",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3017/324/pamhc2foodcore-1.16.1-1.0.5.jar"
+		},
+		"cc-tweaked": {
+			"name": "CC: Tweaked",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3016/342/cc-tweaked-1.16.1-1.90.3.jar"
+		},
+		"jei": {
+			"name": "Just Enough Items (JEI)",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/16/jei-1.16.1-7.0.1.9.jar"
+		},
+		"hwyla": {
+			"name": "Hwyla",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3017/694/Hwyla-forge-1.10.10-B77_1.16.1.jar"
+		},
+		"mrcrayfish-furniture-mod": {
+			"name": "MrCrayfish's Furniture Mod",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/181/furniture-7.0.0-pre18-1.16.1.jar"
+		},
+		"tool-belt": {
+			"name": "Tool Belt",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3006/581/ToolBelt-1.16.1-1.14.2.jar"
+		},
+		"findme": {
+			"name": "FindMe",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3021/507/findme-1.16.1-2.0.0.0.jar"
+		},
+		"macaws-windows": {
+			"name": "Macaw's Windows",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3016/201/mcws-win-1.16.1-v1.0.2.jar"
+		},
+		"just-enough-resources-jer": {
+			"name": "Just Enough Resources (JER)",
+			"type": "mod",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3021/581/JustEnoughResources-1.16.1-0.11.1.90.jar"
+		},
+		"randompatches": {
+			"name": "RandomPatches",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3015/905/randompatches-1.16.1-1.22.1.1.jar"
+		},
+		"inventory-tweaks-renewed": {
+			"name": "Inventory Tweaks Renewed",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3001/839/invtweaks-1.16.1-1.0.5.jar"
+		},
+		"more-overlays-updated": {
+			"name": "More Overlays Updated",
+			"type": "mod",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3022/782/moreoverlays-1.18.1-mc1.16.1.jar"
+		},
+		"reauth": {
+			"name": "ReAuth",
+			"type": "mod",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3007/481/ReAuth-1.16-Forge-3.9.0.jar"
+		},
+		"bountifulbaubles": {
+			"name": "BountifulBaubles",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3014/963/Bountiful Baubles FORGE-1.16.1-0.0.1.jar"
+		},
+		"mahou-tsukai": {
+			"name": "Mahou Tsukai",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3021/929/mahoutsukai-1.16.1-v1.21.0.jar"
+		},
+		"cute-kiwi-birds-new-animal": {
+			"name": "Cute Kiwi Birds - new animal",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3011/599/KiwiBirds 1.3 1.16.1.jar"
+		},
+		"waddles": {
+			"name": "Waddles",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/2993/900/Waddles-1.16.1-0.8.7.jar"
+		},
+		"morpheus": {
+			"name": "Morpheus",
+			"type": "mod",
+			"target": "server",
+			"url": "https://edge.forgecdn.net/files/3007/476/Morpheus-1.16.1-4.2.55.jar"
+		},
+		"fast-leaf-decay": {
+			"name": "Fast Leaf Decay",
+			"type": "mod",
+			"target": "server",
+			"url": "https://edge.forgecdn.net/files/2990/190/FastLeafDecay-v23.jar"
+		},
+		"falling-tree": {
+			"name": "Falling Tree",
+			"type": "mod",
+			"target": "server",
+			"url": "https://edge.forgecdn.net/files/3019/753/FallingTree-1.16.1-2.2.1.jar"
+		},
+		"patchouli": {
+			"name": "Patchouli",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3006/47/Patchouli-1.16-39.jar"
+		},
+		"curios": {
+			"name": "Curios API (Forge)",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/143/curios-FORGE-1.16.1-3.0.0.1.jar"
+		},
+		"optifine": {
+			"name": "Optifine",
+			"type": "mod",
+			"target": "client",
+			"url": "https://optifine.net/adloadx?f=OptiFine_1.16.1_HD_U_G2.jar",
+			"manual": true
+		}
+	}
+}
