@@ -3,10 +3,10 @@
 	"description": "Community modpack 2020.",
 	"version": {
 		"minecraft": "1.16.1",
-		"forge": "1.16.1-32.0.98"
+		"forge": "1.16.1-32.0.106"
 	},
 	"installation": {
-		"forge": "1.16.1-forge-32.0.98"
+		"forge": "1.16.1-forge-32.0.106"
 	},
 	"ram": {
 		"preferred": 4,
@@ -46,12 +46,6 @@
 			"type": "mod",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/2989/14/ironchest-1.16.1-11.0.1.jar"
-		},
-		"immersive-engineering": {
-			"name": "Immersive Engineering",
-			"type": "mod",
-			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3008/326/ImmersiveEngineering-0.16-109.jar"
 		},
 		"applied-energistics-2": {
 			"name": "Applied Energistics 2",
@@ -179,6 +173,18 @@
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/2993/900/Waddles-1.16.1-0.8.7.jar"
 		},
+		"oh-the-biomes-youll-go": {
+			"name": "Oh The Biomes You'll Go",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3022/175/byg-1.0.14.jar"
+		},
+		"dungeons-plus": {
+			"name": "Dungeons Plus",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/2990/940/dungeons-plus-1.16.1-1.0.2.jar"
+		},
 		"morpheus": {
 			"name": "Morpheus",
 			"type": "mod",
@@ -197,6 +203,12 @@
 			"target": "server",
 			"url": "https://edge.forgecdn.net/files/3019/753/FallingTree-1.16.1-2.2.1.jar"
 		},
+		"structure-gel-api": {
+			"name": "Structure Gel API",
+			"type": "dependency",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3018/650/structure-gel-api-1.16.1-1.2.1.jar"
+		},
 		"patchouli": {
 			"name": "Patchouli",
 			"type": "dependency",
@@ -207,7 +219,7 @@
 			"name": "Curios API (Forge)",
 			"type": "dependency",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3022/143/curios-FORGE-1.16.1-3.0.0.1.jar"
+			"url": "https://edge.forgecdn.net/files/3023/24/curios-FORGE-1.16.1-3.0.0.2.jar"
 		},
 		"optifine": {
 			"name": "Optifine",
