@@ -52,7 +52,7 @@ if (require('electron-squirrel-startup')) {
 		});
 
 		ipcMain.on('show-folder', (event, openPath) => {
-			shell.openItem(openPath);
+			shell.openPath(openPath);
 		});
 
 		ipcMain.on('open-devtools', (event) => {
