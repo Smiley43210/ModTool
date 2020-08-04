@@ -309,46 +309,54 @@ window.addEventListener('DOMContentLoaded', async () => {
 	// Convert packs to Map and populate pack list
 	{
 		let newPacks = new Map();
+		let packPromises = [];
+		isBusy = true;
 		for (let pack of packs) {
-			let packData = await getJSON(`https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/${pack}.json`);
-			packData.id = pack;
+			let packItem = _.createHTML(`<div class='item'><div class='title'>${pack}</div><div class='version'>Loading...</div></div>`, packSelectElement);
 			
-			// Convert mods object to a Map
-			let newMods = new Map();
-			for (let mod in packData.mods) {
-				if (packData.mods.hasOwnProperty(mod)) {
-					let modObject = packData.mods[mod];
-					modObject.id = mod;
-					newMods.set(mod, modObject);
-				}
-			}
-			packData.mods = newMods;
-			
-			newPacks.set(pack, packData);
-			
-			let packItem = _.createHTML(`<div class='item'><div class='title'>${packData.name}</div><div class='version'>Minecraft ${packData.version.minecraft}</div></div>`, packSelectElement);
-
-			packItem.addEventListener('click', () => {
-				if (isBusy) {
-					return;
-				}
+			packPromises.push(getJSON(`https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/${pack}.json`).then((packData) => {
+				packData.id = pack;
 				
-				if (selectedPackElement) {
-					selectedPackElement.classList.remove('selected');
+				packItem.children[0].innerText = packData.name;
+				packItem.children[1].innerText = `Minecraft ${packData.version.minecraft}`;
+				
+				// Convert mods object to a Map
+				let newMods = new Map();
+				for (let mod in packData.mods) {
+					if (packData.mods.hasOwnProperty(mod)) {
+						let modObject = packData.mods[mod];
+						modObject.id = mod;
+						newMods.set(mod, modObject);
+					}
 				}
-
-				packItem.classList.add('selected');
-				selectedPackElement = packItem;
-				selectedPack = pack;
+				packData.mods = newMods;
 				
-				showPackInfo(packData);
-
-				packClientInstallElement.removeAttribute('disabled');
-				packServerInstallElement.removeAttribute('disabled');
+				newPacks.set(pack, packData);
 				
-				checkInstallDirectory();
-			});
+				packItem.addEventListener('click', () => {
+					if (isBusy) {
+						return;
+					}
+					
+					if (selectedPackElement) {
+						selectedPackElement.classList.remove('selected');
+					}
+					
+					packItem.classList.add('selected');
+					selectedPackElement = packItem;
+					selectedPack = pack;
+					
+					showPackInfo(packData);
+					
+					packClientInstallElement.removeAttribute('disabled');
+					packServerInstallElement.removeAttribute('disabled');
+					
+					checkInstallDirectory();
+				});
+			}));
 		}
+		await Promise.all(packPromises);
+		isBusy = false;
 		packs = newPacks;
 	}
 	
