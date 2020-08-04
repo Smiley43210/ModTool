@@ -34,7 +34,7 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 			icon: packData.profile.icon,
 			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
 			lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
-			lastVersionId: `${packData.version.minecraft}-forge${packData.version.forge}`,
+			lastVersionId: packData.installation.forge,
 			name: packData.name,
 			type: 'custom'
 		};
@@ -233,7 +233,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 				
 				if (selectedPack !== null) {
 					let packData = packs.get(selectedPack);
-					if (data.profiles.forge && data.profiles.forge.lastVersionId == `${packData.version.minecraft}-forge${packData.version.forge}`) {
+					if (data.profiles.forge && data.profiles.forge.lastVersionId == packData.installation.forge) {
 						value.forgeInstalled = true;
 					} else {
 						value.forgeInstalled = false;

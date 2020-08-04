@@ -5,6 +5,9 @@
 		"minecraft": "1.16.1",
 		"forge": "1.16.1-32.0.98"
 	},
+	"installation": {
+		"forge": "1.16.1-forge-32.0.98"
+	},
 	"ram": {
 		"preferred": 4,
 		"minimum": 3,
