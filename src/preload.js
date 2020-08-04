@@ -563,7 +563,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	});
 	
 	installDirChangeElement.addEventListener('click', async () => {
-		let paths = ipcRenderer.sendSync('folder-select', installDirectory);
+		let paths = ipcRenderer.sendSync('folder-select', installDirectory, 'Locate your Minecraft installation directory...');
 		
 		if (paths) {
 			installDirectory = paths[0];

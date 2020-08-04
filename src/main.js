@@ -43,9 +43,9 @@ if (require('electron-squirrel-startup')) {
 			event.returnValue = app.getVersion();
 		});
 
-		ipcMain.on('folder-select', (event, defaultPath) => {
+		ipcMain.on('folder-select', (event, defaultPath, title) => {
 			event.returnValue = dialog.showOpenDialogSync(mainWindow, {
-				title: 'Locate your Minecraft installation directory...',
+				title: title,
 				defaultPath,
 				properties: ['openDirectory']
 			});
