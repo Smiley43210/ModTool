@@ -482,7 +482,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 			});
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {
-					_.createHTML(`<div><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+					_.createHTML(`<div style='margin-bottom: 10px;'><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
 				}
 			}
 		}
