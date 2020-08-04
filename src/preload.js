@@ -436,9 +436,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 		// Modify profile
 		updateProfile(installDirectory, packDirectory, packData);
 		
-		// Import options
-		if (!fs.existsSync(path.join(packDirectory, 'options.txt'))) {
-			await fs.promises.copyFile(path.join(installDirectory, 'options.txt'), path.join(packDirectory, 'options.txt'));
+		// Try to import options
+		try {
+			fs.copyFileSync(path.join(installDirectory, 'options.txt'), path.join(packDirectory, 'options.txt'), fs.constants.COPYFILE_EXCL);
+		} catch (error) {
+			// Do nothing
 		}
 		
 		// Separate manual mods
