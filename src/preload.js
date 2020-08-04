@@ -519,6 +519,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 		// Separate manual mods
 		let filteredMods = filterMods('server', packData);
 		
+		// Download forge
+		progressElement.message = 'Downloading Minecraft Forge...';
+		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-universal.jar`, installDirectory, null, (state) => {
+			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
+			progressElement.value = state.percent;
+		});
+		
 		// Download mods
 		let downloadMap = await downloadMods('server', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
 		progressElement.message = 'Modpack installation complete!';
