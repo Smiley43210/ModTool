@@ -393,7 +393,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		if (!validityData.forgeInstalled) {
 			// Download and install forge
 			progressElement.message = 'Downloading Minecraft Forge...';
-			await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer${process.platform == 'win32' ? '-win.exe' : '.jar'}`, downloadDirectory, null, (state) => {
+			await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
 				progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
 				progressElement.value = state.percent;
 			}).then(async (fileName) => {
@@ -405,7 +405,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 					try {
 						await new Promise((resolve, reject) => {
 							if (process.platform == 'win32') {
-								childProcess.execFile(filePath, (error) => {
+								childProcess.exec(`"C:\\Program Files (x86)\\Minecraft Launcher\\runtime\\jre-x64\\bin\\java.exe" -jar "${filePath}"`, (error) => {
 									if (error) {
 										reject(error);
 									} else {
@@ -424,7 +424,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 						});
 						break;
 					} catch (error) {
-						console.log('Error installing Minecraft Forge');
+						console.error('Error installing Minecraft Forge');
+						console.error(error);
 					}
 				}
 			});
