@@ -47,17 +47,23 @@
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/2989/14/ironchest-1.16.1-11.0.1.jar"
 		},
+		"immersive-engineering": {
+			"name": "Immersive Engineering",
+			"type": "mod",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3024/200/ImmersiveEngineering-1.16.1-3.1-112.jar"
+		},
 		"applied-energistics-2": {
 			"name": "Applied Energistics 2",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3020/576/appliedenergistics2-8.0.0-alpha.1.jar"
+			"url": "https://edge.forgecdn.net/files/3024/462/appliedenergistics2-8.0.0-alpha.2.jar"
 		},
 		"gravestone-mod": {
 			"name": "GraveStone Mod",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3010/108/gravestone-1.16.1-1.0.5.jar"
+			"url": "https://edge.forgecdn.net/files/3023/111/gravestone-1.16.1-1.0.6.jar"
 		},
 		"cooking-for-blockheads": {
 			"name": "Cooking for Blockheads",
@@ -123,7 +129,7 @@
 			"name": "Just Enough Resources (JER)",
 			"type": "mod",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3021/581/JustEnoughResources-1.16.1-0.11.1.90.jar"
+			"url": "https://edge.forgecdn.net/files/3024/938/JustEnoughResources-1.16.1-0.11.1.93.jar"
 		},
 		"randompatches": {
 			"name": "RandomPatches",
@@ -141,7 +147,7 @@
 			"name": "More Overlays Updated",
 			"type": "mod",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3022/782/moreoverlays-1.18.1-mc1.16.1.jar"
+			"url": "https://edge.forgecdn.net/files/3024/634/moreoverlays-1.18.3-mc1.16.1.jar"
 		},
 		"reauth": {
 			"name": "ReAuth",
@@ -159,7 +165,7 @@
 			"name": "Mahou Tsukai",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3021/929/mahoutsukai-1.16.1-v1.21.0.jar"
+			"url": "https://edge.forgecdn.net/files/3025/680/mahoutsukai-1.16.1-v1.21.3.jar"
 		},
 		"cute-kiwi-birds-new-animal": {
 			"name": "Cute Kiwi Birds - new animal",
