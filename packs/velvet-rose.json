@@ -3,10 +3,10 @@
 	"description": "Community modpack 2020.",
 	"version": {
 		"minecraft": "1.16.1",
-		"forge": "1.16.1-32.0.106"
+		"forge": "1.16.1-32.0.108"
 	},
 	"installation": {
-		"forge": "1.16.1-forge-32.0.106"
+		"forge": "1.16.1-forge-32.0.108"
 	},
 	"ram": {
 		"preferred": 4,
@@ -21,25 +21,25 @@
 			"name": "Botania",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3022/18/Botania-1.16-399.jar"
+			"url": "https://edge.forgecdn.net/files/3031/825/Botania-1.16-402.jar"
 		},
 		"mekanism": {
 			"name": "Mekanism",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3022/330/Mekanism-1.16.1-10.0.8.431.jar"
+			"url": "https://edge.forgecdn.net/files/3032/353/Mekanism-1.16.1-10.0.9.432.jar"
 		},
 		"mekanism-generators": {
 			"name": "Mekanism Generators",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3022/332/MekanismGenerators-1.16.1-10.0.8.431.jar"
+			"url": "https://edge.forgecdn.net/files/3032/355/MekanismGenerators-1.16.1-10.0.9.432.jar"
 		},
 		"torchmaster": {
 			"name": "Torchmaster",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3017/969/torchmaster-2.3.1-alpha.jar"
+			"url": "https://edge.forgecdn.net/files/3030/985/torchmaster-2.3.2-alpha.jar"
 		},
 		"iron-chests": {
 			"name": "Iron Chests",
@@ -57,7 +57,7 @@
 			"name": "Applied Energistics 2",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3024/462/appliedenergistics2-8.0.0-alpha.2.jar"
+			"url": "https://edge.forgecdn.net/files/3033/130/appliedenergistics2-8.0.0-beta.1.jar"
 		},
 		"gravestone-mod": {
 			"name": "GraveStone Mod",
@@ -69,13 +69,13 @@
 			"name": "Cooking for Blockheads",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/2998/692/CookingForBlockheads_1.16.1-9.0.0.jar"
+			"url": "https://edge.forgecdn.net/files/3029/252/CookingForBlockheads_1.16.1-9.0.2.jar"
 		},
 		"farming-for-blockheads": {
 			"name": "Farming for Blockheads",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3005/325/FarmingForBlockheads_1.16.1-7.0.1.jar"
+			"url": "https://edge.forgecdn.net/files/3029/224/FarmingForBlockheads_1.16.1-7.0.2.jar"
 		},
 		"pams-harvestcraft-2-food-core": {
 			"name": "Pam's HarvestCraft 2 - Food Core",
@@ -93,7 +93,7 @@
 			"name": "Just Enough Items (JEI)",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3022/16/jei-1.16.1-7.0.1.9.jar"
+			"url": "https://edge.forgecdn.net/files/3028/697/jei-1.16.1-7.0.1.10.jar"
 		},
 		"hwyla": {
 			"name": "Hwyla",
@@ -141,13 +141,13 @@
 			"name": "Inventory Tweaks Renewed",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3026/702/invtweaks-1.16.1-1.0.6.jar"
+			"url": "https://edge.forgecdn.net/files/3031/920/invtweaks-1.16.2-1.0.0.jar"
 		},
 		"more-overlays-updated": {
 			"name": "More Overlays Updated",
 			"type": "mod",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3024/634/moreoverlays-1.18.3-mc1.16.1.jar"
+			"url": "https://edge.forgecdn.net/files/3031/72/moreoverlays-1.18.4-mc1.16.1.jar"
 		},
 		"reauth": {
 			"name": "ReAuth",
@@ -225,7 +225,7 @@
 			"name": "MineColonies",
 			"type": "mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3027/736/minecolonies-0.13.108-ALPHA-universal.jar"
+			"url": "https://edge.forgecdn.net/files/3033/53/minecolonies-0.13.138-ALPHA-universal.jar"
 		},
 		"gentle-fawn": {
 			"name": "Gentle Fawn",
@@ -285,7 +285,7 @@
 			"name": "Structurize",
 			"type": "dependency",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3027/695/structurize-0.13.43-ALPHA.jar"
+			"url": "https://edge.forgecdn.net/files/3029/204/structurize-0.13.44-ALPHA.jar"
 		},
 		"optifine": {
 			"name": "Optifine",
