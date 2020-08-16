@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset='UTF-8'>
+		<meta http-equiv='Content-Security-Policy' content="default-src 'self'; script-src-elem https://unpkg.com/ file: 'unsafe-inline'; style-src https://fonts.googleapis.com/ https://unpkg.com/ file: 'unsafe-inline'; font-src https://fonts.gstatic.com/">
 		<title>RedPack</title>
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Mono' rel='stylesheet'>
 		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
@@ -134,46 +135,56 @@
 				<header><h1>Modpacks</h1></header>
 			</div>
 			<div class='content'>
-				<div>
-					<h1 id='pack-name'>Loading...</h1>
-					<div id='pack-about' class='group' data-label='About' style='display: none; margin-top: 0;'>
-						<div id='pack-description'></div>
-						<div style='padding-top: 10px;'>
-							Minecraft <span id='pack-minecraft-version'></span>
-						</div>
-					</div>
-					<div style='display: flex; padding-bottom: 10px;'>
-						<div style='flex: 1; margin-top: 10px; margin-right: 5px;'>
-							<button disabled id='pack-install-client' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%;'>
-								<span class='mdc-button__label'>Install Client</span>
-							</button>
-							<div class='check' id='client-install-check'></div>
-						</div>
-						<div style="flex: 1; margin-top: 10px; margin-left: 5px;">
-							<button disabled id='pack-install-server' class='mdc-button mdc-button--raised mdc-button--accent' style='display: block; width: 100%;'>
-								<span class='mdc-button__label'>Install Server</span>
-							</button>
-							<div class='check' id='server-install-check'></div>
-						</div>
-					</div>
-					<div id='progress' class='group' style='display: none;' data-label="Progress">
-						<progress-element id='progress-main'></progress-element>
-					</div>
-					<button id='advanced-toggle' class='mdc-button mdc-button--raised' style='display: block; width: 100%;'>
-						<span class='mdc-button__label'>Show Advanced Settings</span>
-						<i class="material-icons mdc-button__icon" aria-hidden="true">keyboard_arrow_down</i>
-					</button>
-					<div id='advanced-settings' style='display: none; padding-top: 10px;'>
-						<div>Installation directory:</div>
-						<span id='install-dir' style='font-family: "Roboto Mono", monospace; font-size: 0.85em;'></span>
-						<button id='install-change' class='mdc-button mdc-button--raised' style='margin-left: 5px;'>
-							<span class='mdc-button__label'>Change...</span>
-						</button>
+				<h1 id='pack-name'>Loading...</h1>
+				<div id='pack-about' class='group' data-label='About' style='display: none; margin-top: 0;'>
+					<div id='pack-description'></div>
+					<div style='padding-top: 10px;'>
+						Minecraft <span id='pack-minecraft-version'></span>
 					</div>
 				</div>
-				<div id='version'>version</div>
+				<div style='display: flex; padding: 1em 0;'>
+					<div style='flex: 1; margin-right: 0.5em;'>
+						<button disabled id='pack-install-client' class='mdc-button mdc-button--raised' style='display: block; width: 100%;'>
+							<span class='mdc-button__label'>Install Client</span>
+						</button>
+						<div class='check' id='client-install-check'></div>
+					</div>
+					<div style="flex: 1; margin-left: 0.5em;">
+						<button disabled id='pack-install-server' class='mdc-button mdc-button--raised' style='display: block; width: 100%;'>
+							<span class='mdc-button__label'>Install Server</span>
+						</button>
+						<div class='check' id='server-install-check'></div>
+					</div>
+				</div>
+				<div id='progress' class='group' style='display: none;' data-label="Progress">
+					<progress-element id='progress-main'></progress-element>
+				</div>
+				<button id='advanced-toggle' class='mdc-button' style='display: block; width: 100%;'>
+					<span class='mdc-button__label'>Show Advanced Settings</span>
+					<i class="material-icons mdc-button__icon" aria-hidden="true">keyboard_arrow_down</i>
+				</button>
+				<div id='advanced-settings' style='display: none;'>
+					<div class='setting'>
+						<div>
+							<span style='font-weight: 500;'>Game installation directory</span>
+							<button id='install-change' class='mdc-button mdc-button--raised mdc-button--accent' style='margin-left: 0.5em; height: 32px; font-size: 0.75rem;'>
+								<span class='mdc-button__label'>Change...</span>
+							</button>
+						</div>
+						<span id='install-dir' class='value'></span>
+					</div>
+					<div class='setting'>
+						<div>
+							<span style='font-weight: 500;'>Java runtime executable location</span>
+							<button id='runtime-change' class='mdc-button mdc-button--raised mdc-button--accent' style='margin-left: 0.5em; height: 32px; font-size: 0.75rem;'>
+								<span class='mdc-button__label'>Change...</span>
+							</button>
+						</div>
+						<span id='runtime-dir' class='value'></span>
+					</div>
+				</div>
 			</div>
-			<div id='debug' style='position: fixed; bottom: 0; right: 0; width: 32px; height: 32px;'></div>
+			<div id='version'>version</div>
 		</main>
 
 		<!-- You can also require other files to run in this process -->

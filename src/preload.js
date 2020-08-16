@@ -196,6 +196,16 @@ function getJSON(url) {
 window.addEventListener('DOMContentLoaded', async () => {
 	let baseDirectory = process.env.APPDATA || (process.platform == 'darwin' ? path.join(process.env.HOME, 'Library', 'Application Support') : path.join(process.env.HOME, '.local', 'share'));
 	let installDirectory = path.join(baseDirectory, `${(process.platform == 'win32' ? '.' : '')}minecraft`);
+	let runtimeDirectory;
+	
+	if (process.platform == 'win32') {
+		runtimeDirectory = path.join(path.parse(process.env.APPDATA).root, 'Program Files (x86)', 'Minecraft Launcher', 'runtime', 'jre-x64', 'bin');
+	} else {
+		runtimeDirectory = path.join(installDirectory, 'runtime', 'jre-x64', 'jre.bundle', 'Contents', 'Home', 'bin');
+	}
+	if (!fs.existsSync(runtimeDirectory)) {
+		runtimeDirectory = null;
+	}
 	
 	let clientInstallCheck = document.getElementById('client-install-check');
 	let serverInstallCheck = document.getElementById('server-install-check');
@@ -212,8 +222,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let advancedSettingsElement = document.getElementById('advanced-settings');
 	let installDirElement = document.getElementById('install-dir');
 	let installDirChangeElement = document.getElementById('install-change');
+	let runtimeDirElement = document.getElementById('runtime-dir');
+	let runtimeDirChangeElement = document.getElementById('runtime-change');
 	let versionElement = document.getElementById('version');
-	let debugElement = document.getElementById('debug');
 	
 	let advancedShown = false;
 	let selectedPackElement = null;
@@ -240,16 +251,22 @@ window.addEventListener('DOMContentLoaded', async () => {
 					}
 				}
 			} catch (error) {
+				console.error(error);
 				value.valid = false;
 			}
 		}).catch((error) => {
+			console.error(error);
 			value.valid = false;
 		});
 		
 		return value;
 	}
 	
-	async function checkInstallDirectory() {
+	function getJavaExecutable() {
+		return path.join(runtimeDirectory, process.platform == 'win32' ? 'java.exe' : 'java');
+	}
+	
+	async function checkPrerequisites() {
 		let data = await validateInstallDirectory();
 		
 		while (clientInstallCheck.lastChild) {
@@ -272,15 +289,52 @@ window.addEventListener('DOMContentLoaded', async () => {
 				_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
 			}
 		}
-		// Server checks
-		_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>No prerequisites.</div>`, serverInstallCheck);
+		
+		// Other checks
+		let runtimeValid = false;
+		if (runtimeDirectory) {
+			if (fs.existsSync(getJavaExecutable())) {
+				runtimeValid = true;
+			}
+		}
+		if (runtimeValid) {
+			_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Found Java executable.</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Found Java executable.</div>`, serverInstallCheck);
+			
+			if (selectedPack) {
+				packClientInstallElement.removeAttribute('disabled');
+				packServerInstallElement.removeAttribute('disabled');
+			}
+		} else {
+			_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, serverInstallCheck);
+			
+			packClientInstallElement.setAttribute('disabled', '');
+			packServerInstallElement.setAttribute('disabled', '');
+		}
+		
+//		// Server checks
+//		_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>No prerequisites.</div>`, serverInstallCheck);
 	}
 	
-	function showPackInfo(packData) {
+	async function showPackInfo(packData) {
 		packAboutElement.style.display = '';
 		packNameElement.innerText = packData.name;
 		packDescriptionElement.innerText = packData.description;
 		packMCVersionElement.innerText = packData.version.minecraft;
+		
+		// Show appropriate text on client button
+		try {
+			let data = await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'});
+			data = JSON.parse(data);
+			if (data.profiles[packData.id]) {
+				packClientInstallElement.children[0].innerText = 'Update Client';
+			} else {
+				throw new Error();
+			}
+		} catch (error) {
+			packClientInstallElement.children[0].innerText = 'Install Client';
+		}
 	}
 	
 	function toggleAdvancedSettings(shouldShow) {
@@ -295,6 +349,46 @@ window.addEventListener('DOMContentLoaded', async () => {
 			toggleAdvancedElement.querySelector('.mdc-button__icon').innerText = 'keyboard_arrow_down';
 			advancedSettingsElement.style.display = 'none';
 		}
+	}
+	
+	async function downloadForge(packData, downloadDirectory, type) {
+		progressElement.message = 'Downloading Minecraft Forge...';
+		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
+			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
+			progressElement.value = state.percent;
+		}).then(async (fileName) => {
+			let filePath = path.join(downloadDirectory, fileName);
+
+			progressElement.value = null;
+			progressElement.message = `<div>Installing Minecraft Forge...</div><div>An installer will appear. Choose "Install ${type}" and follow the prompts.</div>`;
+			while (true) {
+				try {
+					await new Promise((resolve, reject) => {
+						if (process.platform == 'win32') {
+							childProcess.exec(`"${getJavaExecutable()}" -jar "${filePath}"`, (error) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve();
+								}
+							});
+						} else {
+							childProcess.exec(`/usr/bin/java -jar "${filePath}"`, (error) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve();
+								}
+							});
+						}
+					});
+					break;
+				} catch (error) {
+					console.error('Error installing Minecraft Forge');
+					console.error(error);
+				}
+			}
+		});
 	}
 	
 	while (true) {
@@ -333,7 +427,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 				
 				newPacks.set(pack, packData);
 				
-				packItem.addEventListener('click', () => {
+				packItem.addEventListener('click', async () => {
 					if (isBusy) {
 						return;
 					}
@@ -346,12 +440,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 					selectedPackElement = packItem;
 					selectedPack = pack;
 					
-					showPackInfo(packData);
+					await showPackInfo(packData);
 					
 					packClientInstallElement.removeAttribute('disabled');
 					packServerInstallElement.removeAttribute('disabled');
 					
-					checkInstallDirectory();
+					checkPrerequisites();
 				});
 			}));
 		}
@@ -364,7 +458,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	
 	// Show install directory
 	installDirElement.innerText = installDirectory;
-	await checkInstallDirectory();
+	runtimeDirElement.innerHTML = runtimeDirectory ? runtimeDirectory : '<span style="font-style: italic;">Directory could not be found</span>';
+	await checkPrerequisites();
 	
 	packClientInstallElement.addEventListener('click', async () => {
 		if (selectedPack === null) {
@@ -392,43 +487,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		if (!validityData.forgeInstalled) {
 			// Download and install forge
-			progressElement.message = 'Downloading Minecraft Forge...';
-			await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
-				progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
-				progressElement.value = state.percent;
-			}).then(async (fileName) => {
-				let filePath = path.join(downloadDirectory, fileName);
-				
-				progressElement.value = null;
-				progressElement.message = '<div>Installing Minecraft Forge...</div><div>An installer will appear. Choose "Install client" and follow the prompts.</div>';
-				while (true) {
-					try {
-						await new Promise((resolve, reject) => {
-							if (process.platform == 'win32') {
-								childProcess.exec(`"C:\\Program Files (x86)\\Minecraft Launcher\\runtime\\jre-x64\\bin\\java.exe" -jar "${filePath}"`, (error) => {
-									if (error) {
-										reject(error);
-									} else {
-										resolve();
-									}
-								});
-							} else {
-								childProcess.exec(`/usr/bin/java -jar "${filePath}"`, (error) => {
-									if (error) {
-										reject(error);
-									} else {
-										resolve();
-									}
-								});
-							}
-						});
-						break;
-					} catch (error) {
-						console.error('Error installing Minecraft Forge');
-						console.error(error);
-					}
-				}
-			});
+			await downloadForge(packData, downloadDirectory, 'client');
 		}
 		
 		progressElement.message = 'Modifying profile...';
@@ -519,12 +578,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 		// Separate manual mods
 		let filteredMods = filterMods('server', packData);
 		
-		// Download forge
-		progressElement.message = 'Downloading Minecraft Forge...';
-		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-universal.jar`, installDirectory, null, (state) => {
-			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
-			progressElement.value = state.percent;
-		});
+		// Download and install forge
+		await downloadForge(packData, installDirectory, 'server');
 		
 		// Download mods
 		let downloadMap = await downloadMods('server', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
@@ -586,11 +641,21 @@ window.addEventListener('DOMContentLoaded', async () => {
 		if (paths) {
 			installDirectory = paths[0];
 			installDirElement.innerText = paths[0];
-			await checkInstallDirectory();
+			await checkPrerequisites();
 		}
 	});
 	
-	debugElement.addEventListener('click', () => {
+	runtimeDirChangeElement.addEventListener('click', async () => {
+		let paths = ipcRenderer.sendSync('folder-select', runtimeDirectory ? runtimeDirectory : path.parse(process.env.APPDATA).root, 'Locate your Java runtime executable directory...');
+		
+		if (paths) {
+			runtimeDirectory = paths[0];
+			runtimeDirElement.innerText = paths[0];
+			await checkPrerequisites();
+		}
+	});
+	
+	versionElement.addEventListener('click', () => {
 		ipcRenderer.send('open-devtools');
 	});
 	

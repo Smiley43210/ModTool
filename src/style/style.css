@@ -1,11 +1,12 @@
 html, input, select, button {
-	font-family: "Roboto", Helvetica, "Times New Roman", sans-serif;
+	font-family: 'Roboto', Helvetica, 'Times New Roman', sans-serif;
 	user-select: none;
 }
 
 body {
 	margin: 0;
-	color: #fff;
+	background: #121212;
+	color: rgba(255 255 255 / 0.87);
 	font-weight: 300;
 }
 
@@ -17,7 +18,7 @@ main {
 
 h1 {
 	margin: 0;
-	padding: 10px 0;
+	padding: 1em 0;
 	font-size: 1.2em;
 	font-weight: 500;
 }
@@ -28,18 +29,22 @@ a {
 
 .sidebar {
 	width: 200px;
-	background: #212125;
+	background: #1d1d1d;
+	overflow: auto;
+	box-shadow: rgba(0 0 0 / 0.3) 4px 0 1em;
 }
 
 .sidebar header {
-	padding: 0 10px;
-/*	background: #8021f3;*/
+	position: sticky;
+	top: 0;
+	padding: 0 1em;
+	background: inherit;
 }
 
 .sidebar .item {
-	padding: 10px;
+	padding: 1em;
 	border-bottom: 1px solid #424242;
-	cursor: default;
+	cursor: default !important;
 }
 
 .sidebar .item:last-child {
@@ -47,31 +52,39 @@ a {
 }
 
 .sidebar .item:hover {
-	background: #e6510017;
+	background: rgba(255 198 138 / 0.12);
 }
 
 .sidebar .item.selected {
-	background: #e651007a;
+	background: rgba(255 198 138 / 0.24);
+}
+
+.sidebar .item .title {
+	font-weight: 400;
 }
 
 .sidebar .item .version {
-	color: #ffffffad;
+	color: rgba(255 255 255 / 0.6);
 	font-size: 0.85em;
 }
 
 .content {
 	flex: 1;
 	position: relative;
-	padding: 0 10px;
-	background: #29292d;
+	padding: 0 1em;
+	overflow: auto;
 }
 
 .check {
-	margin-top: 10px;
+	margin-top: 1em;
 }
 
 .check .row {
 	display: flex;
+}
+
+.check .row:not(:last-child) {
+	padding-bottom: 0.5em;
 }
 
 .check .icon {
@@ -82,7 +95,7 @@ a {
 .group {
 	position: relative;
 	margin-top: 10px;
-	padding-top: 20px;
+	padding-top: 1.5em;
 }
 
 .group::after {
@@ -90,19 +103,32 @@ a {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 20px;
-	line-height: 20px;
+	height: 1em;
+	margin-bottom: 0.5em;
+	line-height: 1em;
 	font-size: 16px;
 	font-weight: 500;
 	text-transform: uppercase;
 }
 
+#advanced-settings {
+	padding: 1em 0;
+}
+
+#advanced-settings > div:not(:last-child) {
+	margin-bottom: 1em;
+}
+
+.setting .value {
+	margin-top: 0.5em;
+	font-family: 'Roboto Mono', monospace; font-size: 0.85em;
+}
+
 #version {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
-	left: 0;
-	padding: 3px 6px;
-	color: var(--mdc-theme-on-primary);
+	right: 0;
+	padding: 0.5em 0.75em;
 	font-size: 0.7em;
-	background: var(--mdc-theme-primary);
+	background: #1d1d1d;
 }

@@ -1,7 +1,14 @@
 /* MDC Overrides */
 :root {
-	--mdc-theme-primary: #424245;
-	--mdc-theme-accent: #e65100;
+/*	--mdc-theme-primary: #424245;*/
+	--mdc-theme-primary: #ffc68a;
+	--mdc-theme-on-primary: #000;
+/*	--mdc-theme-accent: #e65100;*/
+	--mdc-theme-accent: #a4ade9;
+}
+
+.mdc-button {
+	cursor: default;
 }
 
 /* Color the input labels using the theme color */
@@ -11,9 +18,10 @@
 	color: var(--mdc-theme-primary);
 }
 
-/* Change the disabled button text color */
+/* Change the disabled button taxt and background color */
 .mdc-button--raised:disabled, .mdc-button--unelevated:disabled {
-	color: rgba(255,255,255,.37);
+	color: rgba(255 255 255 / .38);
+	background: rgba(255 255 255 / .12)
 }
 
 /* Add a new class to color buttons using the accent color */
