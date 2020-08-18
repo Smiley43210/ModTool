@@ -7,7 +7,7 @@ const request = require('request');
 const progress = require('request-progress');
 const os = require('os');
 const childProcess = require('child_process');
-const {ipcRenderer, shell} = require('electron');
+const {ipcRenderer, shell, autoUpdater} = require('electron');
 
 const DOWNLOAD_SLOTS = 3;
 let isBusy = false;
@@ -26,30 +26,25 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 		configuredMem = packData.ram.preferred;
 	}
 	
-	await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}).then((data) => {
-		data = JSON.parse(data);
-		
-		data.profiles[packData.id] = {
-			gameDir: packDirectory,
-			icon: packData.profile.icon,
-			javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
-			lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
-			lastVersionId: packData.installation.forge,
-			name: packData.name,
-			type: 'custom'
-		};
-		
-		return JSON.stringify(data, null, 2);
-	}).then(async (data) => {
-		await fs.promises.writeFile(path.join(installDirectory, 'launcher_profiles.json'), data);
-	});
+	let data = JSON.parse(await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}));
+	data.profiles[packData.id] = {
+		gameDir: packDirectory,
+		icon: packData.profile.icon,
+		javaArgs: `-Xmx${configuredMem}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -Dfml.readTimeout=120 -Dfml.loginTimeout=120`,
+		lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
+		lastVersionId: packData.installation.forge,
+		name: packData.name,
+		type: 'custom'
+	};
+	await fs.promises.writeFile(path.join(installDirectory, 'launcher_profiles.json'), JSON.stringify(data, null, 2));
 }
 
 function downloadFile(url, destinationDirectory, infoCallback, progressCallback) {
 	let infoCalled = false;
 	
 	return new Promise(async (resolve) => {
-		while (true) {
+		let retries = 3;
+		while (retries > 0) {
 			try {
 				progressCallback({percent: null});
 				let promise = new Promise((attemptResolve, reject) => {
@@ -88,8 +83,13 @@ function downloadFile(url, destinationDirectory, infoCallback, progressCallback)
 				resolve(fileName);
 				break;
 			} catch (error) {
+				retries--;
 				// Do nothing
 			}
+		}
+		
+		if (retries == 0) {
+			showSnackbar('Failed to download file! See console for details', 10000);
 		}
 	});
 }
@@ -193,6 +193,32 @@ function getJSON(url) {
 	});
 }
 
+function showSnackbar(message, timeout = 5000, button = {}) {
+	let snackbarElement = _.createHTML(`<div class='mdc-snackbar mdc-snackbar--leading'><div class='mdc-snackbar__surface'><div class='mdc-snackbar__label' role='status' aria-live='polite'>${message}</div><div class='mdc-snackbar__actions'></div></div></div>`, document.body);
+	
+	if (button.actionText) {
+		_.createHTML(`<button type='button' class='mdc-button mdc-snackbar__action'><div class='mdc-button__ripple'></div><span class='mdc-button__label'>${button.actionText}</span></button>`, snackbarElement.querySelector('.mdc-snackbar__actions'));
+	}
+	if (button.dismiss) {
+		_.createHTML(`<button class='mdc-icon-button mdc-snackbar__dismiss material-icons' title='Dismiss'>close</button>`, snackbarElement.querySelector('.mdc-snackbar__actions'));
+	}
+	
+	let snackbar = new mdc.snackbar.MDCSnackbar(snackbarElement);
+	snackbar.timeoutMs = timeout;
+	snackbar.listen('MDCSnackbar:closing', (event) => {
+		if (event.detail.reason == 'action') {
+			button.action();
+		}
+	});
+	snackbar.listen('MDCSnackbar:closed', (event) => {
+		snackbarElement.parentElement.removeChild(snackbarElement);
+	});
+	
+	snackbar.open();
+	
+	return snackbar;
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
 	let baseDirectory = process.env.APPDATA || (process.platform == 'darwin' ? path.join(process.env.HOME, 'Library', 'Application Support') : path.join(process.env.HOME, '.local', 'share'));
 	let installDirectory = path.join(baseDirectory, `${(process.platform == 'win32' ? '.' : '')}minecraft`);
@@ -214,6 +240,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	let packAboutElement = document.getElementById('pack-about');
 	let packDescriptionElement = document.getElementById('pack-description');
 	let packMCVersionElement = document.getElementById('pack-minecraft-version');
+	let packForgeVersionElement = document.getElementById('pack-forge-version');
 	let packClientInstallElement = document.getElementById('pack-install-client');
 	let packServerInstallElement = document.getElementById('pack-install-server');
 	let progressGroupElement = document.getElementById('progress');
@@ -234,30 +261,69 @@ window.addEventListener('DOMContentLoaded', async () => {
 	// Display the version
 	versionElement.innerText = `v${ipcRenderer.sendSync('version')}`;
 	
+	// Resize listener
+	const resizeObserver = new ResizeObserver((entries) => {
+		for (let entry of entries) {
+			let scrollbarOffset = entry.target.offsetWidth - entry.target.clientWidth;
+			
+			versionElement.style.right = `${scrollbarOffset}px`;
+		}
+	});
+	resizeObserver.observe(document.querySelector('.content'));
+	
+	// Update listener
+	let updateSnackbar = null;
+	ipcRenderer.on('update-check', (event, state) => {
+		if (state == null) {
+			return;
+		}
+		
+		if (updateSnackbar) {
+			updateSnackbar.close();
+			updateSnackbar = null;
+		}
+		
+		switch (state) {
+			case 'checking':
+				updateSnackbar = showSnackbar('Checking for application updates...', -1);
+				break;
+			case 'available':
+				updateSnackbar = showSnackbar('An update is available! Downloading...', -1);
+				break;
+			case 'downloaded':
+				updateSnackbar = showSnackbar('An update has been downloaded. Restart to update.', -1, {actionText: 'Restart', action: () => {
+					ipcRenderer.send('update-restart');
+				}, dismiss: true});
+				break;
+			case 'error':
+				updateSnackbar = showSnackbar('An error occurred downloading the update.', -1, {dismiss: true});
+				break;
+		}
+		
+		updateSnackbar.listen('MDCSnackbar:closed', (event) => {
+			updateSnackbar = null;
+		});
+	});
+	ipcRenderer.send('update-check');
+	
 	async function validateInstallDirectory() {
 		let value = {};
 		
-		await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}).then((data) => {
-			try {
-				data = JSON.parse(data);
-				value.valid = true;
-				
-				if (selectedPack !== null) {
-					let packData = packs.get(selectedPack);
-					if (data.profiles.forge && data.profiles.forge.lastVersionId == packData.installation.forge) {
-						value.forgeInstalled = true;
-					} else {
-						value.forgeInstalled = false;
-					}
+		try {
+			let profileData = JSON.parse(await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}));
+			value.valid = true;
+
+			if (selectedPack !== null) {
+				let packData = packs.get(selectedPack);
+				if (profileData.profiles.forge && profileData.profiles.forge.lastVersionId == packData.installation.forge) {
+					value.forgeInstalled = true;
+				} else {
+					value.forgeInstalled = false;
 				}
-			} catch (error) {
-				console.error(error);
-				value.valid = false;
 			}
-		}).catch((error) => {
-			console.error(error);
+		} catch (error) {
 			value.valid = false;
-		});
+		}
 		
 		return value;
 	}
@@ -322,18 +388,18 @@ window.addEventListener('DOMContentLoaded', async () => {
 		packNameElement.innerText = packData.name;
 		packDescriptionElement.innerText = packData.description;
 		packMCVersionElement.innerText = packData.version.minecraft;
+		packForgeVersionElement.innerText = packData.version.forge;
 		
 		// Show appropriate text on client button
 		try {
-			let data = await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'});
-			data = JSON.parse(data);
+			let data = JSON.parse(await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}));
 			if (data.profiles[packData.id]) {
-				packClientInstallElement.children[0].innerText = 'Update Client';
+				packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Update Client';
 			} else {
 				throw new Error();
 			}
 		} catch (error) {
-			packClientInstallElement.children[0].innerText = 'Install Client';
+			packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Install Client';
 		}
 	}
 	
@@ -351,7 +417,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		}
 	}
 	
-	async function downloadForge(packData, downloadDirectory, type) {
+	async function installForge(packData, downloadDirectory, type) {
 		progressElement.message = 'Downloading Minecraft Forge...';
 		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
 			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
@@ -361,32 +427,27 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 			progressElement.value = null;
 			progressElement.message = `<div>Installing Minecraft Forge...</div><div>An installer will appear. Choose "Install ${type}" and follow the prompts.</div>`;
-			while (true) {
+			let retries = 3;
+			while (retries > 0) {
 				try {
 					await new Promise((resolve, reject) => {
-						if (process.platform == 'win32') {
-							childProcess.exec(`"${getJavaExecutable()}" -jar "${filePath}"`, (error) => {
-								if (error) {
-									reject(error);
-								} else {
-									resolve();
-								}
-							});
-						} else {
-							childProcess.exec(`/usr/bin/java -jar "${filePath}"`, (error) => {
-								if (error) {
-									reject(error);
-								} else {
-									resolve();
-								}
-							});
-						}
+						childProcess.exec(`"${getJavaExecutable()}" -jar "${filePath}"`, (error) => {
+							if (error) {
+								reject(error);
+							} else {
+								resolve();
+							}
+						});
 					});
 					break;
 				} catch (error) {
+					retries--;
 					console.error('Error installing Minecraft Forge');
 					console.error(error);
 				}
+			}
+			if (retries == 0) {
+				showSnackbar('Failed to install Forge! See console for details', 10000);
 			}
 		});
 	}
@@ -458,7 +519,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	
 	// Show install directory
 	installDirElement.innerText = installDirectory;
-	runtimeDirElement.innerHTML = runtimeDirectory ? runtimeDirectory : '<span style="font-style: italic;">Directory could not be found</span>';
+	runtimeDirElement.innerHTML = runtimeDirectory ? runtimeDirectory : '<span style=\'font-style: italic;\'>Directory could not be found</span>';
 	await checkPrerequisites();
 	
 	packClientInstallElement.addEventListener('click', async () => {
@@ -487,7 +548,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		if (!validityData.forgeInstalled) {
 			// Download and install forge
-			await downloadForge(packData, downloadDirectory, 'client');
+			await installForge(packData, downloadDirectory, 'client');
 		}
 		
 		progressElement.message = 'Modifying profile...';
@@ -507,7 +568,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Download mods
 		let downloadMap = await downloadMods('client', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
-		progressElement.message = 'Modpack installation complete!';
 		
 		// Cleanup mods
 		// FIXME: Will not work for manual mods like 'mekanism' and 'mekanism-generators'
@@ -535,15 +595,38 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Show manual mods
 		if (filteredMods.manual.length > installedManualMods.length) {
-			let message = _.createHTML(`<div><div>ATTENTION</div><div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} must be downloaded manually. Click on each of the links below, download the mod, and place the jar file into the mods folder.</div><button class='mdc-button mdc-button--raised' style='margin: 10px 0;'><span class='mdc-button__label'>Open Mods Folder</span></button></div>`, progressGroupElement);
-			message.querySelector('button').addEventListener('click', () => {
-				ipcRenderer.send('show-folder', `${modsDirectory}${path.sep}`);
-			});
+			progressElement.message = 'Waiting for manually initiated downloads...';
+			progressElement.value = null;
+			let message = _.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
+			
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {
-					_.createHTML(`<div style='margin-bottom: 10px;'><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+					let modLink = _.createHTML(`<div style='margin-bottom: 10px;'><span style='margin-right: 1em; font-weight: 500;'>${mod.name}</span><button class='mdc-button mdc-button--raised' style='margin: 10px 0; height: 32px; font-size: 0.75rem;'><span class='mdc-button__label'>Download</span></button></div>`, progressGroupElement);
+					let downloadButton = modLink.querySelector('.mdc-button');
+					downloadButton.addEventListener('click', (event) => {
+						event.preventDefault();
+						ipcRenderer.send('manual-mod', mod.name, mod.url, modsDirectory);
+						downloadButton.setAttribute('disabled', '');
+						ipcRenderer.on('manual-mod', (event, modName, state) => {
+							if (modName == mod.name) {
+								let label;
+								
+								if (state == 'waiting') {
+									label = 'Waiting for Download...';
+								} else if (state == 'downloading') {
+									label = 'Downloading...';
+								} else {
+									label = 'Download Complete';
+								}
+								
+								downloadButton.querySelector('.mdc-button__label').innerText = label;
+							}
+						});
+					});
 				}
 			}
+		} else {
+			progressElement.message = 'Modpack installation complete!';
 		}
 		
 		// Delete temporary download directory
@@ -579,7 +662,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		let filteredMods = filterMods('server', packData);
 		
 		// Download and install forge
-		await downloadForge(packData, installDirectory, 'server');
+		await installForge(packData, installDirectory, 'server');
 		
 		// Download mods
 		let downloadMap = await downloadMods('server', filteredMods.automatic, modsDirectory, downloadDirectory, progressElement);
@@ -611,15 +694,38 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Show manual mods
 		if (filteredMods.manual.length > installedManualMods.length) {
-			let message = _.createHTML(`<div><div>ATTENTION</div><div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} must be downloaded manually. Click on each of the links below, download the mod, and place the jar file into the mods folder.</div><button class='mdc-button mdc-button--raised' style='margin: 10px 0;'><span class='mdc-button__label'>Open Mods Folder</span></button></div>`, progressGroupElement);
-			message.querySelector('button').addEventListener('click', () => {
-				ipcRenderer.send('show-folder', `${modsDirectory}${path.sep}`);
-			});
+			progressElement.message = 'Waiting for manually initiated downloads...';
+			progressElement.value = null;
+			let message = _.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
+			
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {
-					_.createHTML(`<div><a href="${mod.url}">${mod.name}</a></div>`, progressGroupElement);
+					let modLink = _.createHTML(`<div style='margin-bottom: 10px;'><span style='margin-right: 1em; font-weight: 500;'>${mod.name}</span><button class='mdc-button mdc-button--raised' style='margin: 10px 0; height: 32px; font-size: 0.75rem;'><span class='mdc-button__label'>Download</span></button></div>`, progressGroupElement);
+					let downloadButton = modLink.querySelector('.mdc-button');
+					downloadButton.addEventListener('click', (event) => {
+						event.preventDefault();
+						ipcRenderer.send('manual-mod', mod.name, mod.url, modsDirectory);
+						downloadButton.setAttribute('disabled', '');
+						ipcRenderer.on('manual-mod', (event, modName, state) => {
+							if (modName == mod.name) {
+								let label;
+								
+								if (state == 'waiting') {
+									label = 'Waiting for Download...';
+								} else if (state == 'downloading') {
+									label = 'Downloading...';
+								} else {
+									label = 'Download Complete';
+								}
+								
+								downloadButton.querySelector('.mdc-button__label').innerText = label;
+							}
+						});
+					});
 				}
 			}
+		} else {
+			progressElement.message = 'Modpack installation complete!';
 		}
 		
 		// Delete temporary download directory
@@ -650,7 +756,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		if (paths) {
 			runtimeDirectory = paths[0];
-			runtimeDirElement.innerText = paths[0];
+			
+			if (fs.existsSync(path.join(runtimeDirectory, 'jre.bundle'))) {
+				runtimeDirectory = path.join(runtimeDirectory, 'jre.bundle', 'Contents', 'Home', 'bin');
+			}
+			
+			runtimeDirElement.innerText = runtimeDirectory;
 			await checkPrerequisites();
 		}
 	});
@@ -659,13 +770,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 		ipcRenderer.send('open-devtools');
 	});
 	
-	// Open all links in external browser
-	document.addEventListener('click', (event) => {
-		if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
-			event.preventDefault();
-			shell.openExternal(event.target.href);
-		}
-	});
+//	// Open all links in external browser
+//	document.addEventListener('click', (event) => {
+//		if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
+//			event.preventDefault();
+//			shell.openExternal(event.target.href);
+//		}
+//	});
 });
 
 const _setImmediate = setImmediate;

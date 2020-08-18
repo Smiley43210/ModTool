@@ -33,7 +33,6 @@
     "eslint-plugin-html": "^6.0.0"
   },
   "dependencies": {
-    "@material/snackbar": "^3.1.0",
     "del": "^5.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "request": "^2.88.0",

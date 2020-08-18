@@ -43,7 +43,6 @@ a {
 
 .sidebar .item {
 	padding: 1em;
-	border-bottom: 1px solid #424242;
 	cursor: default !important;
 }
 
@@ -52,11 +51,11 @@ a {
 }
 
 .sidebar .item:hover {
-	background: rgba(255 198 138 / 0.12);
+	background: rgba(255 176 92 / 0.12);
 }
 
 .sidebar .item.selected {
-	background: rgba(255 198 138 / 0.24);
+	background: rgba(255 176 92 / 0.24);
 }
 
 .sidebar .item .title {

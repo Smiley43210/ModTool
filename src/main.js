@@ -1,17 +1,19 @@
-require('update-electron-app')({updateInterval: '1 hour'});
+require('update-electron-app')({updateInterval: '1 hour', notifyUser: false});
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, shell, ipcMain, dialog} = require('electron');
+const {app, BrowserWindow, shell, ipcMain, dialog, autoUpdater} = require('electron');
 const path = require('path');
+let updateState = null;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow = null;
+const windows = [];
 
 function createWindow() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: 900,
-		height: 600,
+		width: 950,
+		height: 650,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 			backgroundColor: '#121212',
@@ -32,15 +34,58 @@ function createWindow() {
 	});
 }
 
+function setupUpdateListeners() {
+	autoUpdater.on('error', () => {
+		updateState = 'error';
+		if (mainWindow) {
+			mainWindow.webContents.send('update-check', updateState);
+		}
+	});
+	autoUpdater.on('checking-for-update', () => {
+		updateState = 'checking';
+		if (mainWindow) {
+			mainWindow.webContents.send('update-check', updateState);
+		}
+	});
+	autoUpdater.on('update-available', () => {
+		updateState = 'available';
+		if (mainWindow) {
+			mainWindow.webContents.send('update-check', updateState);
+		}
+	});
+	autoUpdater.on('update-not-available', () => {
+		updateState = null;
+		if (mainWindow) {
+			mainWindow.webContents.send('update-check', updateState);
+		}
+	});
+	autoUpdater.on('update-downloaded', () => {
+		updateState = 'downloaded';
+		if (mainWindow) {
+			mainWindow.webContents.send('update-check', updateState);
+		}
+	});
+}
+
 if (require('electron-squirrel-startup')) {
 	app.quit();
 } else {
+	setupUpdateListeners();
+	
 	// This method will be called when Electron has finished
 	// initialization and is ready to create browser windows.
 	// Some APIs can only be used after this event occurs.
 	app.on('ready', () => {
 		ipcMain.on('version', (event) => {
 			event.returnValue = app.getVersion();
+		});
+		
+		ipcMain.on('update-check', (event) => {
+			event.reply('update-check', updateState);
+		});
+		
+		ipcMain.on('update-restart', (event) => {
+			autoUpdater.quitAndInstall();
 		});
 
 		ipcMain.on('folder-select', (event, defaultPath, title) => {
@@ -57,6 +102,64 @@ if (require('electron-squirrel-startup')) {
 
 		ipcMain.on('open-devtools', (event) => {
 			mainWindow.webContents.openDevTools();
+		});
+		
+		ipcMain.on('manual-mod', (event, mod, url, location) => {
+			// Create the browser window.
+			let window = new BrowserWindow({
+				width: 1100,
+				height: 700,
+				webPreferences: {
+					backgroundColor: '#121212',
+					nodeIntegration: false
+				}
+			});
+
+			// Load a remote URL
+			window.loadURL(url);
+			// Notify window of wait
+			event.reply('manual-mod', mod, 'waiting');
+
+			window.webContents.session.on('will-download', (downloadEvent, item, webContents) => {
+				// Set the save path, making Electron not to prompt a save dialog.
+				item.setSavePath(path.join(location, item.getFilename()));
+				
+				// Notify window of download
+				event.reply('manual-mod', mod, 'downloading');
+
+				item.on('updated', (updateEvent, state) => {
+					if (state === 'interrupted') {
+						console.log('Download is interrupted but can be resumed');
+					} else if (state === 'progressing') {
+						if (item.isPaused()) {
+							console.log('Download is paused');
+						} else {
+							console.log(`Received bytes: ${item.getReceivedBytes()}`);
+						}
+					}
+				});
+				item.once('done', (doneEvent, state) => {
+					if (state === 'completed') {
+						event.reply('manual-mod', mod, 'done');
+						console.log('Download successfully');
+					} else {
+						console.log(`Download failed: ${state}`);
+					}
+				});
+				
+				// Close the window
+				window.close();
+			});
+			
+			// Emitted when the window is closed.
+			window.on('closed', () => {
+				// Dereference the window object, usually you would store windows
+				// in an array if your app supports multi windows, this is the time
+				// when you should delete the corresponding element.
+				windows.splice(windows.indexOf(window), 1);
+			});
+
+			windows.push(window);
 		});
 	});
 	app.on('ready', createWindow);

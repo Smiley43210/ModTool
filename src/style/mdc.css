@@ -1,7 +1,8 @@
 /* MDC Overrides */
 :root {
 /*	--mdc-theme-primary: #424245;*/
-	--mdc-theme-primary: #ffc68a;
+/*	--mdc-theme-primary: #ffc68a;*/
+	--mdc-theme-primary: #ffb05c;
 	--mdc-theme-on-primary: #000;
 /*	--mdc-theme-accent: #e65100;*/
 	--mdc-theme-accent: #a4ade9;
