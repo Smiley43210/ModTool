@@ -19,13 +19,18 @@
 	color: var(--mdc-theme-primary);
 }
 
-/* Change the disabled button taxt and background color */
+/* Change the disabled button text and background color */
 .mdc-button--raised:disabled, .mdc-button--unelevated:disabled {
 	color: rgba(255 255 255 / .38);
-	background: rgba(255 255 255 / .12)
+	background: rgba(255 255 255 / .12);
 }
 
 /* Add a new class to color buttons using the accent color */
 .mdc-button--raised:not(:disabled).mdc-button--accent {
 	background-color: var(--mdc-theme-accent);
+}
+
+/* Change the outline color of buttons */
+.mdc-button--outlined:not(:disabled) {
+	border-color: rgba(255 255 255 / .12);
 }
