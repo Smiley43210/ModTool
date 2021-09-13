@@ -344,15 +344,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Client checks
 		if (data.valid) {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Minecraft is installed.</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Minecraft is installed.</div>`, clientInstallCheck);
 		} else {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Minecraft is not installed. Run the Minecraft launcher first!</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Minecraft is not installed. Run the Minecraft launcher first!</div>`, clientInstallCheck);
 		}
 		if (selectedPack !== null) {
 			if (data.forgeInstalled) {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Forge is installed.</div>`, clientInstallCheck);
+				_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Forge is installed.</div>`, clientInstallCheck);
 			} else {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
+				_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
 			}
 		}
 		
@@ -364,23 +364,23 @@ window.addEventListener('DOMContentLoaded', async () => {
 			}
 		}
 		if (runtimeValid) {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Found Java executable.</div>`, clientInstallCheck);
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>Found Java executable.</div>`, serverInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>`, serverInstallCheck);
 			
 			if (selectedPack) {
 				packClientInstallElement.removeAttribute('disabled');
 				packServerInstallElement.removeAttribute('disabled');
 			}
 		} else {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, clientInstallCheck);
-			_.createHTML(`<div class='row'><span class='material-icons icon'>cancel</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, serverInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, clientInstallCheck);
+			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, serverInstallCheck);
 			
 			packClientInstallElement.setAttribute('disabled', '');
 			packServerInstallElement.setAttribute('disabled', '');
 		}
 		
 //		// Server checks
-//		_.createHTML(`<div class='row'><span class='material-icons icon'>check_circle</span>No prerequisites.</div>`, serverInstallCheck);
+//		_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>No prerequisites.</div>`, serverInstallCheck);
 	}
 	
 	async function showPackInfo(packData) {
