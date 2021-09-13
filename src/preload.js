@@ -1,3 +1,5 @@
+/* global mdc */
+
 const _ = require('./script/lib.js');
 const fs = require('fs');
 const path = require('path');
@@ -8,7 +10,7 @@ const request = require('request');
 const progress = require('request-progress');
 const os = require('os');
 const childProcess = require('child_process');
-const {ipcRenderer, shell, autoUpdater} = require('electron');
+const {ipcRenderer} = require('electron');
 
 const DOWNLOAD_SLOTS = 3;
 let isBusy = false;
@@ -35,7 +37,7 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 		lastUsed: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
 		lastVersionId: packData.installation.forge,
 		name: packData.name,
-		type: 'custom'
+		type: 'custom',
 	};
 	await fs.promises.writeFile(path.join(installDirectory, 'launcher_profiles.json'), JSON.stringify(data, null, 2));
 }
@@ -54,12 +56,12 @@ function downloadFile(url, destinationDirectory, infoCallback, progressCallback)
 							progressCallback(state);
 						}
 					}).on('error', (error) => {
-						console.log('Network error', url);
-						reject();
+						console.error('Network error', url);
+						reject(error);
 					}).on('response', (response) => {
 						if (response.statusCode !== 200) {
-							console.log('Non 200 status code', url);
-							reject();
+							console.error('Non 200 status code', url);
+							reject(new Error(`Non 200 status code for ${url}`));
 
 							return;
 						}
@@ -75,8 +77,8 @@ function downloadFile(url, destinationDirectory, infoCallback, progressCallback)
 						fileRequest.pipe(fs.createWriteStream(downloadPath)).on('finish', () => {
 							attemptResolve(fileName);
 						}).on('error', (error) => {
-							console.log('Pipe error', url);
-							reject();
+							console.error('Pipe error', url);
+							reject(error);
 						});
 					});
 				});
@@ -201,7 +203,7 @@ function showSnackbar(message, timeout = 5000, button = {}) {
 		_.createHTML(`<button type='button' class='mdc-button mdc-snackbar__action'><div class='mdc-button__ripple'></div><span class='mdc-button__label'>${button.actionText}</span></button>`, snackbarElement.querySelector('.mdc-snackbar__actions'));
 	}
 	if (button.dismiss) {
-		_.createHTML(`<button class='mdc-icon-button mdc-snackbar__dismiss material-icons' title='Dismiss'>close</button>`, snackbarElement.querySelector('.mdc-snackbar__actions'));
+		_.createHTML("<button class='mdc-icon-button mdc-snackbar__dismiss material-icons' title='Dismiss'>close</button>", snackbarElement.querySelector('.mdc-snackbar__actions'));
 	}
 	
 	let snackbar = new mdc.snackbar.MDCSnackbar(snackbarElement);
@@ -263,7 +265,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 				break;
 			}
 		}
-		console.log({runtimeDirectory});
 	} else {
 		runtimeDirectory = path.join(installDirectory, 'runtime', 'jre-x64', 'jre.bundle', 'Contents', 'Home', 'bin');
 	}
@@ -382,9 +383,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		// Check Minecraft installation
 		if (data.valid) {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Minecraft is installed.</div>`, clientInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>check</span>Minecraft is installed.</div>", clientInstallCheck);
 		} else {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Minecraft is not installed. Run the Minecraft launcher first!</div>`, clientInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>close</span>Minecraft is not installed. Run the Minecraft launcher first!</div>", clientInstallCheck);
 		}
 		// Check Java runtime
 		let runtimeValid = false;
@@ -394,16 +395,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 			}
 		}
 		if (runtimeValid) {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>`, clientInstallCheck);
-			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>`, serverInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>", clientInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>check</span>Found Java executable.</div>", serverInstallCheck);
 			
 			if (selectedPack) {
 				packClientInstallElement.removeAttribute('disabled');
 				packServerInstallElement.removeAttribute('disabled');
 			}
 		} else {
-			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, clientInstallCheck);
-			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>`, serverInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>", clientInstallCheck);
+			_.createHTML("<div class='row'><span class='material-icons icon'>close</span>Could not find Java executable. Make sure Minecraft is installed and set the runtime location in the advanced settings.</div>", serverInstallCheck);
 			
 			packClientInstallElement.setAttribute('disabled', '');
 			packServerInstallElement.setAttribute('disabled', '');
@@ -411,14 +412,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 		// Check Forge installation
 		if (selectedPack !== null) {
 			if (data.forgeInstalled) {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Forge is installed.</div>`, clientInstallCheck);
+				_.createHTML("<div class='row'><span class='material-icons icon'>check</span>Forge is installed.</div>", clientInstallCheck);
 			} else {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>priority_high</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
+				_.createHTML("<div class='row'><span class='material-icons icon'>priority_high</span>Forge is not installed. Will be installed automatically.</div>", clientInstallCheck);
 			}
 		}
 		
-//		// Server checks
-//		_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>No prerequisites.</div>`, serverInstallCheck);
+		// // Server checks
+		// _.createHTML(`<div class='row'><span class='material-icons icon'>check</span>No prerequisites.</div>`, serverInstallCheck);
 	}
 	
 	async function showPackInfo(packData) {
@@ -635,7 +636,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		if (filteredMods.manual.length > installedManualMods.length) {
 			progressElement.message = 'Waiting for manually initiated downloads...';
 			progressElement.value = null;
-			let message = _.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
+			_.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
 			
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {
@@ -734,7 +735,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		if (filteredMods.manual.length > installedManualMods.length) {
 			progressElement.message = 'Waiting for manually initiated downloads...';
 			progressElement.value = null;
-			let message = _.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
+			_.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
 			
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {

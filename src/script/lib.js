@@ -10,7 +10,7 @@ const _ = {};
 			method: method,
 			cache: 'no-cache',
 			headers: headers ? headers : undefined,
-			body: method == 'GET' || method == 'HEAD' || !body ? undefined : body
+			body: method == 'GET' || method == 'HEAD' || !body ? undefined : body,
 		});
 	};
 

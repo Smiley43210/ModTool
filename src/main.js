@@ -18,8 +18,8 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.js'),
 			backgroundColor: '#121212',
 			nodeIntegration: false,
-			nativeWindowOpen: true
-		}
+			nativeWindowOpen: true,
+		},
 	});
 	mainWindow.setMenu(null);
 
@@ -93,7 +93,7 @@ if (require('electron-squirrel-startup')) {
 			event.returnValue = dialog.showOpenDialogSync(mainWindow, {
 				title: title,
 				defaultPath,
-				properties: ['openDirectory']
+				properties: ['openDirectory'],
 			});
 		});
 
@@ -112,8 +112,8 @@ if (require('electron-squirrel-startup')) {
 				height: 700,
 				webPreferences: {
 					backgroundColor: '#121212',
-					nodeIntegration: false
-				}
+					nodeIntegration: false,
+				},
 			});
 
 			// Load a remote URL
