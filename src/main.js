@@ -17,7 +17,8 @@ function createWindow() {
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 			backgroundColor: '#121212',
-			nodeIntegration: false
+			nodeIntegration: false,
+			nativeWindowOpen: true
 		}
 	});
 	mainWindow.setMenu(null);
