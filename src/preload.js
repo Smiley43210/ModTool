@@ -342,21 +342,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 			serverInstallCheck.removeChild(serverInstallCheck.lastChild);
 		}
 		
-		// Client checks
+		// Check Minecraft installation
 		if (data.valid) {
 			_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Minecraft is installed.</div>`, clientInstallCheck);
 		} else {
 			_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Minecraft is not installed. Run the Minecraft launcher first!</div>`, clientInstallCheck);
 		}
-		if (selectedPack !== null) {
-			if (data.forgeInstalled) {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Forge is installed.</div>`, clientInstallCheck);
-			} else {
-				_.createHTML(`<div class='row'><span class='material-icons icon'>close</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
-			}
-		}
-		
-		// Other checks
+		// Check Java runtime
 		let runtimeValid = false;
 		if (runtimeDirectory) {
 			if (fs.existsSync(getJavaExecutable())) {
@@ -377,6 +369,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 			
 			packClientInstallElement.setAttribute('disabled', '');
 			packServerInstallElement.setAttribute('disabled', '');
+		}
+		// Check Forge installation
+		if (selectedPack !== null) {
+			if (data.forgeInstalled) {
+				_.createHTML(`<div class='row'><span class='material-icons icon'>check</span>Forge is installed.</div>`, clientInstallCheck);
+			} else {
+				_.createHTML(`<div class='row'><span class='material-icons icon'>priority_high</span>Forge is not installed. Will be installed automatically.</div>`, clientInstallCheck);
+			}
 		}
 		
 //		// Server checks
