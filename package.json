@@ -35,6 +35,7 @@
   "dependencies": {
     "del": "^6.0.0",
     "electron-squirrel-startup": "^1.0.0",
+    "glob": "^7.1.7",
     "request": "^2.88.2",
     "request-progress": "^3.0.0",
     "slash": "^3.0.0",

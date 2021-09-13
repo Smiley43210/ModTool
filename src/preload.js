@@ -1,6 +1,7 @@
 const _ = require('./script/lib.js');
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 const del = require('del');
 const slash = require('slash');
 const request = require('request');
@@ -221,11 +222,48 @@ function showSnackbar(message, timeout = 5000, button = {}) {
 
 window.addEventListener('DOMContentLoaded', async () => {
 	let baseDirectory = process.env.APPDATA || (process.platform == 'darwin' ? path.join(process.env.HOME, 'Library', 'Application Support') : path.join(process.env.HOME, '.local', 'share'));
-	let installDirectory = path.join(baseDirectory, `${(process.platform == 'win32' ? '.' : '')}minecraft`);
-	let runtimeDirectory;
+	let installDirectory = path.join(baseDirectory, `${process.platform == 'win32' ? '.' : ''}minecraft`);
+	let runtimeDirectory = null;
 	
 	if (process.platform == 'win32') {
-		runtimeDirectory = path.join(path.parse(process.env.APPDATA).root, 'Program Files (x86)', 'Minecraft Launcher', 'runtime', 'jre-x64', 'bin');
+		const drives = await new Promise((resolve, reject) => {
+			childProcess.exec('wmic logicaldisk get name', (error, stdout, stderr) => {
+				if (error) {
+					reject(error);
+					
+					return;
+				}
+				
+				const entries = stdout.trim().split(/[\r\n]+/).map((entry) => {
+					return `${entry.trim()}\\`;
+				});
+				// Remove "Name" label
+				entries.shift();
+				
+				resolve(entries);
+			});
+		});
+		
+		// Check each drive for java runtime
+		for (const drive of drives) {
+			const testPath = path.join(drive, 'Program Files (x86)', 'Minecraft Launcher', 'runtime', '**', 'bin', 'java.exe').replace(/\\/g, '/');
+			const files = await new Promise((resolve, reject) => {
+				glob(testPath, (error, results) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve(results);
+					}
+				});
+			});
+			
+			if (files.length > 0) {
+				runtimeDirectory = path.parse(files[0]).dir;
+				
+				break;
+			}
+		}
+		console.log({runtimeDirectory});
 	} else {
 		runtimeDirectory = path.join(installDirectory, 'runtime', 'jre-x64', 'jre.bundle', 'Contents', 'Home', 'bin');
 	}
