@@ -464,7 +464,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	
 	async function installForge(packData, downloadDirectory, type) {
 		progressElement.message = 'Downloading Minecraft Forge...';
-		await downloadFile(`https://files.minecraftforge.net/maven/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
+		await downloadFile(`https://maven.minecraftforge.net/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
 			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
 			progressElement.value = state.percent;
 		}).then(async (fileName) => {
