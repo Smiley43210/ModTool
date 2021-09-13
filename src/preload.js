@@ -272,6 +272,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		runtimeDirectory = null;
 	}
 	
+	let refreshElement = document.getElementById('refresh');
 	let clientInstallCheck = document.getElementById('client-install-check');
 	let serverInstallCheck = document.getElementById('server-install-check');
 	let packSelectElement = document.getElementById('pack-select');
@@ -423,22 +424,27 @@ window.addEventListener('DOMContentLoaded', async () => {
 	}
 	
 	async function showPackInfo(packData) {
-		packAboutElement.style.display = '';
-		packNameElement.innerText = packData.name;
-		packDescriptionElement.innerText = packData.description;
-		packMCVersionElement.innerText = packData.version.minecraft;
-		packForgeVersionElement.innerText = packData.version.forge;
-		
-		// Show appropriate text on client button
-		try {
-			let data = JSON.parse(await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}));
-			if (data.profiles[packData.id]) {
-				packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Update Client';
-			} else {
-				throw new Error();
+		if (packData === null) {
+			packAboutElement.style.display = 'none';
+			packNameElement.innerText = '';
+		} else {
+			packAboutElement.style.display = '';
+			packNameElement.innerText = packData.name;
+			packDescriptionElement.innerText = packData.description;
+			packMCVersionElement.innerText = packData.version.minecraft;
+			packForgeVersionElement.innerText = packData.version.forge;
+			
+			// Show appropriate text on client button
+			try {
+				let data = JSON.parse(await fs.promises.readFile(path.join(installDirectory, 'launcher_profiles.json'), {encoding: 'utf8'}));
+				if (data.profiles[packData.id]) {
+					packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Update Client';
+				} else {
+					throw new Error();
+				}
+			} catch (error) {
+				packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Install Client';
 			}
-		} catch (error) {
-			packClientInstallElement.querySelector('.mdc-button__label').innerText = 'Install Client';
 		}
 	}
 	
@@ -491,17 +497,25 @@ window.addEventListener('DOMContentLoaded', async () => {
 		});
 	}
 	
-	while (true) {
-		try {
-			packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/index.json');
-			break;
-		} catch (error) {
-			// Do nothing
+	async function loadPacks() {
+		await showPackInfo(null);
+		refreshElement.classList.add('disabled');
+		
+		// Remove packs from list
+		while (packSelectElement.children.length > 1) {
+			packSelectElement.lastChild.remove();
 		}
-	}
-	
-	// Convert packs to Map and populate pack list
-	{
+		
+		while (true) {
+			try {
+				packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/index.json');
+				break;
+			} catch (error) {
+				// Do nothing
+			}
+		}
+		
+		// Convert packs to Map and populate pack list
 		let newPacks = new Map();
 		let packPromises = [];
 		isBusy = true;
@@ -549,12 +563,18 @@ window.addEventListener('DOMContentLoaded', async () => {
 				});
 			}));
 		}
+		
 		await Promise.all(packPromises);
+		
+		refreshElement.classList.remove('disabled');
 		isBusy = false;
 		packs = newPacks;
+		packNameElement.innerText = 'Select a Modpack';
 	}
 	
-	packNameElement.innerText = 'Select a Modpack';
+	refreshElement.addEventListener('click', loadPacks);
+	
+	await loadPacks();
 	
 	// Show install directory
 	installDirElement.innerText = installDirectory;
