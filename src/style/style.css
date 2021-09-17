@@ -41,13 +41,20 @@ a {
 	background: inherit;
 }
 
+.sidebar header .refresh {
+	margin: auto 0; font-size: 20px;
+	cursor: pointer;
+}
+
+.sidebar header .refresh.disabled {
+	color:rgba(255 255 255 / 0.3);
+	cursor: default;
+	pointer-events: none;
+}
+
 .sidebar .item {
 	padding: 1em;
 	cursor: default !important;
-}
-
-.sidebar .item:last-child {
-/*	border-bottom: none;*/
 }
 
 .sidebar .item:hover {
