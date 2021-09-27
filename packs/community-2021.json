@@ -20,386 +20,517 @@
 		"55438": {
 			"id": 55438,
 			"name": "MrCrayfish's Furniture Mod",
+			"slug": "mrcrayfish-furniture-mod",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3346/467/cfm-7.0.0pre22-1.16.3.jar"
 		},
 		"60028": {
 			"id": 60028,
 			"name": "Aquaculture 2",
+			"slug": "aquaculture",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3454/318/Aquaculture-1.16.5-2.1.21.jar"
 		},
 		"69118": {
 			"id": 69118,
 			"name": "Morpheus",
+			"slug": "morpheus",
 			"target": "client",
 			"url": "https://edge.forgecdn.net/files/3215/383/Morpheus-1.16.5-4.2.70.jar"
 		},
 		"69162": {
 			"id": 69162,
 			"name": "CoFH Core",
+			"slug": "cofh-core",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3407/19/cofh_core-1.16.5-1.3.1.jar"
 		},
 		"69163": {
 			"id": 69163,
 			"name": "Thermal Expansion",
+			"slug": "thermal-expansion",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3404/884/thermal_expansion-1.16.5-1.3.0.jar"
-		},
-		"74072": {
-			"id": 74072,
-			"name": "Tinkers Construct",
-			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3439/200/TConstruct-1.16.5-3.1.2.265.jar"
-		},
-		"74924": {
-			"id": 74924,
-			"name": "Mantle",
-			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3439/180/Mantle-1.16.5-1.6.123.jar"
+			"url": "https://edge.forgecdn.net/files/3404/884/thermal_expansion-1.16.5-1.3.0.jar",
+			"dependencies": [
+				222880
+			]
 		},
 		"220318": {
 			"id": 220318,
 			"name": "Biomes O' Plenty",
+			"slug": "biomes-o-plenty",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3407/189/BiomesOPlenty-1.16.5-13.1.0.482-universal.jar"
 		},
 		"222880": {
 			"id": 222880,
 			"name": "Thermal Foundation",
+			"slug": "thermal-foundation",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3412/300/thermal_foundation-1.16.5-1.3.2.jar"
+			"url": "https://edge.forgecdn.net/files/3412/300/thermal_foundation-1.16.5-1.3.2.jar",
+			"dependencies": [
+				69162
+			]
 		},
 		"223794": {
 			"id": 223794,
 			"name": "Applied Energistics 2",
+			"slug": "applied-energistics-2",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3455/386/appliedenergistics2-8.4.1.jar"
 		},
 		"225643": {
 			"id": 225643,
 			"name": "Botania",
+			"slug": "botania",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3386/883/Botania-1.16.5-419.jar"
+			"url": "https://edge.forgecdn.net/files/3386/883/Botania-1.16.5-419.jar",
+			"dependencies": [
+				306770,
+				309927
+			]
 		},
 		"228702": {
 			"id": 228702,
 			"name": "Project Red - Core",
+			"slug": "project-red-core",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3459/382/ProjectRed-1.16.5-4.11.0-beta-0-core.jar"
+			"url": "https://edge.forgecdn.net/files/3459/382/ProjectRed-1.16.5-4.11.0-beta-0-core.jar",
+			"dependencies": [
+				242818,
+				471286,
+				258426
+			]
 		},
 		"228756": {
 			"id": 228756,
 			"name": "Iron Chests",
+			"slug": "iron-chests",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3405/717/ironchest-1.16.5-11.2.13.jar"
 		},
 		"229045": {
 			"id": 229045,
 			"name": "Project Red - Integration",
+			"slug": "project-red-integration",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3459/383/ProjectRed-1.16.5-4.11.0-beta-0-integration.jar"
+			"url": "https://edge.forgecdn.net/files/3459/383/ProjectRed-1.16.5-4.11.0-beta-0-integration.jar",
+			"dependencies": [
+				228702
+			]
 		},
 		"229046": {
 			"id": 229046,
 			"name": "Project Red - Illumination",
+			"slug": "project-red-illumination",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3459/384/ProjectRed-1.16.5-4.11.0-beta-0-illumination.jar"
+			"url": "https://edge.forgecdn.net/files/3459/384/ProjectRed-1.16.5-4.11.0-beta-0-illumination.jar",
+			"dependencies": [
+				228702
+			]
 		},
 		"230976": {
 			"id": 230976,
 			"name": "Fast Leaf Decay",
+			"slug": "fast-leaf-decay",
 			"target": "server",
 			"url": "https://edge.forgecdn.net/files/3052/146/FastLeafDecay-v25.jar"
 		},
 		"231484": {
 			"id": 231484,
 			"name": "Cooking for Blockheads",
+			"slug": "cooking-for-blockheads",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3445/172/CookingForBlockheads_1.16.5-9.3.4.jar"
 		},
 		"231951": {
 			"id": 231951,
 			"name": "Immersive Engineering",
+			"slug": "immersive-engineering",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3431/122/ImmersiveEngineering-1.16.5-5.0.3-138.jar"
 		},
 		"237701": {
 			"id": 237701,
 			"name": "ReAuth",
+			"slug": "reauth",
 			"target": "client",
 			"url": "https://edge.forgecdn.net/files/3105/779/ReAuth-1.16-Forge-3.9.3.jar"
 		},
 		"238222": {
 			"id": 238222,
 			"name": "Just Enough Items (JEI)",
-			"target": "client",
+			"slug": "jei",
+			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3438/494/jei-1.16.5-7.7.1.121.jar"
 		},
 		"238551": {
 			"id": 238551,
 			"name": "GraveStone Mod",
+			"slug": "gravestone-mod",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3447/911/gravestone-1.16.5-1.0.7.jar"
 		},
 		"240630": {
 			"id": 240630,
 			"name": "Just Enough Resources (JER)",
+			"slug": "just-enough-resources-jer",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3435/305/JustEnoughResources-1.16.5-0.12.1.128.jar"
+			"url": "https://edge.forgecdn.net/files/3435/305/JustEnoughResources-1.16.5-0.12.1.128.jar",
+			"dependencies": [
+				238222
+			]
 		},
 		"242818": {
 			"id": 242818,
 			"name": "CodeChicken Lib 1.8.+",
+			"slug": "codechicken-lib-1-8",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3456/69/CodeChickenLib-1.16.5-4.0.3.434-universal.jar"
 		},
 		"244256": {
 			"id": 244256,
 			"name": "Reap Mod",
+			"slug": "reap-mod",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3242/601/reap-1.16.5-1.0.1.jar"
 		},
 		"247560": {
 			"id": 247560,
 			"name": "Oh The Biomes You'll Go",
+			"slug": "oh-the-biomes-youll-go",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3444/476/byg-1.3.4.jar"
 		},
 		"248787": {
 			"id": 248787,
 			"name": "AppleSkin",
+			"slug": "appleskin",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3395/800/appleskin-forge-mc1.16.x-2.1.0.jar"
 		},
 		"251767": {
 			"id": 251767,
 			"name": "Waddles",
+			"slug": "waddles",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3343/400/Waddles-1.16.5-0.8.13.jar"
 		},
 		"253449": {
 			"id": 253449,
 			"name": "Hwyla",
+			"slug": "hwyla",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3033/593/Hwyla-forge-1.10.11-B78_1.16.2.jar"
 		},
 		"254268": {
 			"id": 254268,
 			"name": "Torchmaster",
+			"slug": "torchmaster",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3433/163/torchmaster-2.3.8.jar"
 		},
 		"258426": {
 			"id": 258426,
 			"name": "CB Multipart",
+			"slug": "cb-multipart",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3459/903/CBMultipart-1.16.5-3.0.2.120-universal.jar"
+			"url": "https://edge.forgecdn.net/files/3459/903/CBMultipart-1.16.5-3.0.2.120-universal.jar",
+			"dependencies": [
+				471286,
+				242818
+			]
 		},
 		"260262": {
 			"id": 260262,
 			"name": "Tool Belt",
+			"slug": "tool-belt",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3258/349/ToolBelt-1.16.5-1.16.0.jar"
 		},
 		"261924": {
 			"id": 261924,
 			"name": "Farming for Blockheads",
+			"slug": "farming-for-blockheads",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3332/379/FarmingForBlockheads_1.16.5-7.3.1.jar"
 		},
 		"268560": {
 			"id": 268560,
 			"name": "Mekanism",
+			"slug": "mekanism",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3206/392/Mekanism-1.16.5-10.0.21.448.jar"
 		},
 		"268566": {
 			"id": 268566,
 			"name": "Mekanism Generators",
+			"slug": "mekanism-generators",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3206/395/MekanismGenerators-1.16.5-10.0.21.448.jar"
+			"url": "https://edge.forgecdn.net/files/3206/395/MekanismGenerators-1.16.5-10.0.21.448.jar",
+			"dependencies": [
+				268560
+			]
 		},
 		"282001": {
 			"id": 282001,
 			"name": "CC: Tweaked",
+			"slug": "cc-tweaked",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3434/680/cc-tweaked-1.16.5-1.98.2.jar"
 		},
 		"283644": {
 			"id": 283644,
 			"name": "Placebo",
+			"slug": "placebo",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3437/9/Placebo-1.16.5-4.6.0.jar"
 		},
 		"285612": {
 			"id": 285612,
 			"name": "RandomPatches (Forge)",
+			"slug": "randompatches-forge",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3211/323/randompatches-2.4.4-forge.jar"
 		},
 		"288885": {
 			"id": 288885,
 			"name": "FastWorkbench",
+			"slug": "fastworkbench",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3245/271/FastWorkbench-1.16.4-4.5.1.jar"
+			"url": "https://edge.forgecdn.net/files/3245/271/FastWorkbench-1.16.4-4.5.1.jar",
+			"dependencies": [
+				283644
+			]
 		},
 		"291936": {
 			"id": 291936,
 			"name": "FindMe",
+			"slug": "findme",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3297/137/findme-1.16.3-2.2.0.0.jar"
+			"url": "https://edge.forgecdn.net/files/3297/137/findme-1.16.3-2.2.0.0.jar",
+			"dependencies": [
+				238222
+			]
 		},
 		"299540": {
 			"id": 299540,
 			"name": "FastFurnace",
+			"slug": "fastfurnace",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3172/796/FastFurnace-1.16.4-4.4.0.jar"
+			"url": "https://edge.forgecdn.net/files/3172/796/FastFurnace-1.16.4-4.4.0.jar",
+			"dependencies": [
+				283644
+			]
 		},
 		"303557": {
 			"id": 303557,
 			"name": "Better Animals Plus",
+			"slug": "betteranimalsplus",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3286/395/betteranimalsplus-1.16.5-10.2.0.jar"
 		},
 		"306770": {
 			"id": 306770,
 			"name": "Patchouli",
+			"slug": "patchouli",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3459/118/Patchouli-1.16.4-53.2.jar"
 		},
 		"309927": {
 			"id": 309927,
 			"name": "Curios API (Forge)",
+			"slug": "curios",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3456/953/curios-forge-1.16.5-4.0.5.3.jar"
 		},
 		"313536": {
 			"id": 313536,
 			"name": "BountifulBaubles",
+			"slug": "bountifulbaubles",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3431/126/bountifulbaubles-1.16.5-0.1.0-forge.jar"
+			"url": "https://edge.forgecdn.net/files/3431/126/bountifulbaubles-1.16.5-0.1.0-forge.jar",
+			"dependencies": [
+				309927
+			]
 		},
 		"331936": {
 			"id": 331936,
 			"name": "Citadel",
+			"slug": "citadel",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3441/28/citadel-1.8.1-1.16.5.jar"
 		},
 		"342543": {
 			"id": 342543,
 			"name": "Mahou Tsukai",
+			"slug": "mahou-tsukai",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3452/540/mahoutsukai-1.16.5-v1.31.42.jar"
 		},
 		"349559": {
 			"id": 349559,
 			"name": "FallingTree (Forge&Fabric)",
+			"slug": "falling-tree",
 			"target": "server",
 			"url": "https://edge.forgecdn.net/files/3349/236/FallingTree-1.16.5-2.11.5.jar"
 		},
 		"350179": {
 			"id": 350179,
 			"name": "Double Slabs",
+			"slug": "double-slabs",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3447/17/DoubleSlabs-1.16-3.7.1.jar"
 		},
 		"361385": {
 			"id": 361385,
 			"name": "Pam's HarvestCraft 2 - Crops",
+			"slug": "pams-harvestcraft-2-crops",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3276/350/pamhc2crops-1.16.3-1.0.2.jar"
 		},
 		"363569": {
 			"id": 363569,
 			"name": "Macaw's Windows",
+			"slug": "macaws-windows",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3443/597/mcw-windows-2.0.0-mc1.16.5.jar"
 		},
 		"365460": {
 			"id": 365460,
 			"name": "Pam's HarvestCraft 2 - Trees",
+			"slug": "pams-harvestcraft-2-trees",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3281/234/pamhc2trees-1.16.3-1.0.1.jar"
 		},
 		"372534": {
 			"id": 372534,
 			"name": "Pam's HarvestCraft 2 - Food Core",
+			"slug": "pams-harvestcraft-2-food-core",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3190/867/pamhc2foodcore-1.16.3-1.0.2.jar"
 		},
 		"377794": {
 			"id": 377794,
 			"name": "Dungeons Plus",
+			"slug": "dungeons-plus",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3318/948/dungeons_plus-1.16.5-1.1.5.jar"
+			"url": "https://edge.forgecdn.net/files/3318/948/dungeons_plus-1.16.5-1.1.5.jar",
+			"dependencies": [
+				378802
+			]
 		},
 		"378802": {
 			"id": 378802,
 			"name": "Structure Gel API",
+			"slug": "structure-gel-api",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3268/432/structure_gel-1.16.5-1.7.7.jar"
 		},
 		"382459": {
 			"id": 382459,
 			"name": "The Lost Worlds [Forge]",
+			"slug": "the-lost-worlds-forge",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3359/179/lostworlds-1.0.0-alpha-10.jar"
+			"url": "https://edge.forgecdn.net/files/3359/179/lostworlds-1.0.0-alpha-10.jar",
+			"dependencies": [
+				388172
+			]
 		},
 		"383070": {
 			"id": 383070,
 			"name": "Inventory Tweaks Renewed",
+			"slug": "inventory-tweaks-renewed",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3102/237/invtweaks-1.16.4-1.0.1.jar"
 		},
 		"388172": {
 			"id": 388172,
 			"name": "GeckoLib",
+			"slug": "geckolib",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3448/99/geckolib-forge-1.16.5-3.0.46.jar"
 		},
 		"391382": {
 			"id": 391382,
 			"name": "More Overlays Updated",
+			"slug": "more-overlays-updated",
 			"target": "client",
 			"url": "https://edge.forgecdn.net/files/3395/133/moreoverlays-1.18.15-mc1.16.5.jar"
 		},
 		"402231": {
 			"id": 402231,
 			"name": "Pam's HarvestCraft 2 - Food Extended",
+			"slug": "pams-harvestcraft-2-food-extended",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3418/627/pamhc2foodextended-1.16.3-1.0.4.jar"
+			"url": "https://edge.forgecdn.net/files/3418/627/pamhc2foodextended-1.16.3-1.0.4.jar",
+			"dependencies": [
+				372534
+			]
+		},
+		"404465": {
+			"id": 404465,
+			"name": "FTB Library (Forge)",
+			"slug": "ftb-library-forge",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3456/644/ftb-library-forge-1605.3.3-build.71.jar",
+			"dependencies": [
+				419699
+			]
 		},
 		"414401": {
 			"id": 414401,
 			"name": "Creatures and Beasts",
+			"slug": "creatures-and-beasts",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3252/973/CNB-1.16.3_5-1.2.11.jar"
+			"url": "https://edge.forgecdn.net/files/3252/973/CNB-1.16.3_5-1.2.11.jar",
+			"dependencies": [
+				388172
+			]
+		},
+		"419699": {
+			"id": 419699,
+			"name": "Architectury API (Forge)",
+			"slug": "architectury-forge",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3462/13/architectury-1.23.33-forge.jar"
 		},
 		"426558": {
 			"id": 426558,
 			"name": "Alex's Mobs",
+			"slug": "alexs-mobs",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3440/131/alexsmobs-1.12.0.jar"
+			"url": "https://edge.forgecdn.net/files/3467/280/alexsmobs-1.12.1.jar",
+			"dependencies": [
+				331936
+			]
 		},
 		"471286": {
 			"id": 471286,
 			"name": "Scorge",
+			"slug": "scorge",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3276/638/Scorge-3.1.3.jar"
 		},
 		"478939": {
 			"id": 478939,
 			"name": "Project Red - Transmission",
+			"slug": "project-red-transmission",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3459/386/ProjectRed-1.16.5-4.11.0-beta-0-transmission.jar"
+			"url": "https://edge.forgecdn.net/files/3459/386/ProjectRed-1.16.5-4.11.0-beta-0-transmission.jar",
+			"dependencies": [
+				228702
+			]
 		},
 		"486928": {
 			"id": 486928,
 			"name": "MrCrayfish's More Furniture Mod",
+			"slug": "mrcrayfish-more-furniture-mod",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3346/602/morecfm-1.3.1-1.16.3.jar"
+			"url": "https://edge.forgecdn.net/files/3346/602/morecfm-1.3.1-1.16.3.jar",
+			"dependencies": [
+				55438
+			]
 		}
 	}
 }
