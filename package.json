@@ -30,12 +30,12 @@
     "@electron-forge/publisher-github": "^6.0.0-beta.61",
     "electron": "^14.0.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-html": "^6.1.2"
+    "eslint-plugin-html": "^6.2.0"
   },
   "dependencies": {
     "del": "^6.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "glob": "^7.1.7",
+    "glob": "^7.2.0",
     "request": "^2.88.2",
     "request-progress": "^3.0.0",
     "slash": "^3.0.0",
