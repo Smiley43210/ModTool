@@ -659,11 +659,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 			progressElement.message = 'Waiting for manually initiated downloads...';
 			progressElement.value = null;
 			_.createHTML(`<div>${filteredMods.manual.length - installedManualMods.length} mod${filteredMods.manual.length - installedManualMods.length > 1 ? 's' : ''} could not be automatically downloaded. Click each button below to open the mod website and click the proper download link.</div>`, progressGroupElement);
+			const manualPromises = [];
 			
 			for (let mod of filteredMods.manual) {
 				if (installedManualMods.indexOf(mod.id) == -1) {
 					let modLink = _.createHTML(`<div style='margin-bottom: 10px;'><span style='margin-right: 1em; font-weight: 500;'>${mod.name}</span><button class='mdc-button mdc-button--raised' style='margin: 10px 0; height: 32px; font-size: 0.75rem;'><span class='mdc-button__label'>Download</span></button></div>`, progressGroupElement);
 					let downloadButton = modLink.querySelector('.mdc-button');
+					manualPromises.push(new Promise((resolve) => {
 					downloadButton.addEventListener('click', (event) => {
 						event.preventDefault();
 						ipcRenderer.send('manual-mod', mod.name, mod.url, modsDirectory);
@@ -678,14 +680,21 @@ window.addEventListener('DOMContentLoaded', async () => {
 									label = 'Downloading...';
 								} else {
 									label = 'Download Complete';
+										resolve();
 								}
 								
 								downloadButton.querySelector('.mdc-button__label').innerText = label;
 							}
 						});
 					});
+					}));
 				}
 			}
+			
+			Promise.all(manualPromises).then(() => {
+				progressElement.message = 'Modpack installation complete!';
+				progressElement.value = 1;
+			});
 		} else {
 			progressElement.message = 'Modpack installation complete!';
 		}
