@@ -19,6 +19,7 @@ function createWindow() {
 			backgroundColor: '#121212',
 			nodeIntegration: false,
 			nativeWindowOpen: true,
+			contextIsolation: false,
 		},
 	});
 	mainWindow.setMenu(null);
