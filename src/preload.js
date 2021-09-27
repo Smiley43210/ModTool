@@ -186,7 +186,9 @@ function downloadMods(target, mods, modsDirectory, downloadDirectory, progressEl
 
 function getJSON(url) {
 	return new Promise((resolve, reject) => {
-		request(url, {json: true}, (error, response, data) => {
+		request(url, {json: true, headers: {
+			'Cache-Control': 'no-cache',
+		}}, (error, response, data) => {
 			if (error) {
 				reject(error);
 			}
