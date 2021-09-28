@@ -380,7 +380,7 @@
 			"name": "Double Slabs",
 			"slug": "double-slabs",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3447/17/DoubleSlabs-1.16-3.7.1.jar"
+			"url": "https://edge.forgecdn.net/files/3474/792/DoubleSlabs-1.16-3.7.2.jar"
 		},
 		"361385": {
 			"id": 361385,
@@ -426,16 +426,6 @@
 			"slug": "structure-gel-api",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3268/432/structure_gel-1.16.5-1.7.7.jar"
-		},
-		"382459": {
-			"id": 382459,
-			"name": "The Lost Worlds [Forge]",
-			"slug": "the-lost-worlds-forge",
-			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3359/179/lostworlds-1.0.0-alpha-10.jar",
-			"dependencies": [
-				388172
-			]
 		},
 		"383070": {
 			"id": 383070,
