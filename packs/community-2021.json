@@ -307,7 +307,7 @@
 			"id": 291936,
 			"name": "FindMe",
 			"slug": "findme",
-			"target": "client",
+			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3297/137/findme-1.16.3-2.2.0.0.jar",
 			"dependencies": [
 				238222
