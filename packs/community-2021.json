@@ -35,7 +35,7 @@
 			"id": 69118,
 			"name": "Morpheus",
 			"slug": "morpheus",
-			"target": "client",
+			"target": "server",
 			"url": "https://edge.forgecdn.net/files/3215/383/Morpheus-1.16.5-4.2.70.jar"
 		},
 		"69162": {
@@ -77,7 +77,7 @@
 			"name": "Applied Energistics 2",
 			"slug": "applied-energistics-2",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3455/386/appliedenergistics2-8.4.1.jar"
+			"url": "https://edge.forgecdn.net/files/3480/20/appliedenergistics2-8.4.2.jar"
 		},
 		"225643": {
 			"id": 225643,
@@ -148,7 +148,7 @@
 			"name": "Immersive Engineering",
 			"slug": "immersive-engineering",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3431/122/ImmersiveEngineering-1.16.5-5.0.3-138.jar"
+			"url": "https://edge.forgecdn.net/files/3483/884/ImmersiveEngineering-1.16.5-5.0.4-139.jar"
 		},
 		"237701": {
 			"id": 237701,
@@ -162,7 +162,7 @@
 			"name": "Just Enough Items (JEI)",
 			"slug": "jei",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3438/494/jei-1.16.5-7.7.1.121.jar"
+			"url": "https://edge.forgecdn.net/files/3488/178/jei-1.16.5-7.7.1.126.jar"
 		},
 		"238551": {
 			"id": 238551,
@@ -200,7 +200,7 @@
 			"name": "Oh The Biomes You'll Go",
 			"slug": "oh-the-biomes-youll-go",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3444/476/byg-1.3.4.jar"
+			"url": "https://edge.forgecdn.net/files/3485/79/byg-1.3.5.jar"
 		},
 		"248787": {
 			"id": 248787,
@@ -222,13 +222,6 @@
 			"slug": "hwyla",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3033/593/Hwyla-forge-1.10.11-B78_1.16.2.jar"
-		},
-		"254268": {
-			"id": 254268,
-			"name": "Torchmaster",
-			"slug": "torchmaster",
-			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3433/163/torchmaster-2.3.8.jar"
 		},
 		"258426": {
 			"id": 258426,
@@ -366,7 +359,7 @@
 			"name": "Mahou Tsukai",
 			"slug": "mahou-tsukai",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3452/540/mahoutsukai-1.16.5-v1.31.42.jar"
+			"url": "https://edge.forgecdn.net/files/3480/563/mahoutsukai-1.16.5-v1.32.1.jar"
 		},
 		"349559": {
 			"id": 349559,
@@ -463,7 +456,7 @@
 			"name": "FTB Library (Forge)",
 			"slug": "ftb-library-forge",
 			"target": "client",
-			"url": "https://edge.forgecdn.net/files/3456/644/ftb-library-forge-1605.3.3-build.71.jar",
+			"url": "https://edge.forgecdn.net/files/3476/854/ftb-library-forge-1605.3.3-build.74.jar",
 			"dependencies": [
 				419699
 			]
@@ -501,6 +494,13 @@
 			"slug": "scorge",
 			"target": "both",
 			"url": "https://edge.forgecdn.net/files/3276/638/Scorge-3.1.3.jar"
+		},
+		"478559": {
+			"id": 478559,
+			"name": "Measurements",
+			"slug": "measurements",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3395/370/Measurements-1.16.5-1.1.jar"
 		},
 		"478939": {
 			"id": 478939,
