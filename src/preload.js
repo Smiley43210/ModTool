@@ -316,13 +316,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 	// Update listener
 	let updateSnackbar = null;
 	ipcRenderer.on('update-check', (event, state) => {
-		if (state == null) {
-			return;
-		}
-		
 		if (updateSnackbar) {
 			updateSnackbar.close();
 			updateSnackbar = null;
+		}
+		
+		if (state == null) {
+			return;
 		}
 		
 		switch (state) {
