@@ -1,0 +1,80 @@
+{
+	"name": "Vanilla-Like 2022",
+	"description": "A lightweight modpack that adds only quality-of-life changes and no new real features.",
+	"version": {
+		"minecraft": "1.19",
+		"forge": "1.19-41.0.38"
+	},
+	"installation": {
+		"forge": "1.19-forge-41.0.38"
+	},
+	"ram": {
+		"preferred": 2,
+		"minimum": 2,
+		"maximum": 4
+	},
+	"profile": {
+		"icon": "Glass"
+	},
+	"mods": {
+		"237701": {
+			"id": 237701,
+			"name": "ReAuth",
+			"slug": "reauth",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3834/622/ReAuth-1.19-Forge-4.0.4.jar"
+		},
+		"238222": {
+			"id": 238222,
+			"name": "Just Enough Items (JEI)",
+			"slug": "jei",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3835/406/jei-1.19-forge-11.0.0.206.jar"
+		},
+		"248787": {
+			"id": 248787,
+			"name": "AppleSkin",
+			"slug": "appleskin",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3821/807/appleskin-forge-mc1.19-2.4.0.jar"
+		},
+		"349559": {
+			"id": 349559,
+			"name": "FallingTree (Forge&Fabric)",
+			"slug": "falling-tree",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3824/828/FallingTree-1.19-3.6.1.jar"
+		},
+		"391382": {
+			"id": 391382,
+			"name": "More Overlays Updated",
+			"slug": "more-overlays-updated",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3834/715/moreoverlays-1.21.1-mc1.19.jar"
+		},
+		"455982": {
+			"id": 455982,
+			"name": "WTHIT Forge Edition",
+			"slug": "wthit-forge",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3835/298/wthit-forge-5.3.0.jar",
+			"dependencies": [
+				615134
+			]
+		},
+		"495267": {
+			"id": 495267,
+			"name": "Inventory Profiles Next",
+			"slug": "inventory-profiles-next",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3833/901/InventoryProfilesNext-forge-1.19-1.5.3.jar"
+		},
+		"615134": {
+			"id": 615134,
+			"name": "bad packets",
+			"slug": "badpackets",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3773/642/badpackets-forge-0.1.2.jar"
+		}
+	}
+}
