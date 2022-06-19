@@ -17,6 +17,13 @@
 		"icon": "Glass"
 	},
 	"mods": {
+		"32274": {
+			"id": 32274,
+			"name": "JourneyMap",
+			"slug": "journeymap",
+			"target": "both",
+			"url": "https://edge.forgecdn.net/files/3834/645/journeymap-1.19-5.8.5rc2-forge.jar"
+		},
 		"237701": {
 			"id": 237701,
 			"name": "ReAuth",
@@ -57,10 +64,17 @@
 			"name": "WTHIT Forge Edition",
 			"slug": "wthit-forge",
 			"target": "both",
-			"url": "https://edge.forgecdn.net/files/3835/298/wthit-forge-5.3.0.jar",
+			"url": "https://edge.forgecdn.net/files/3838/350/wthit-forge-5.4.1.jar",
 			"dependencies": [
 				615134
 			]
+		},
+		"457570": {
+			"id": 457570,
+			"name": "Configured",
+			"slug": "configured",
+			"target": "client",
+			"url": "https://edge.forgecdn.net/files/3822/820/configured-1.5.3-1.19.jar"
 		},
 		"495267": {
 			"id": 495267,
