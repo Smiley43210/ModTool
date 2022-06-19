@@ -171,7 +171,7 @@ function downloadMods(target, mods, modsDirectory, downloadDirectory, progressEl
 }
 
 async function getJSON(url) {
-	const response = await fetch(url);
+	const response = await fetch(url, {cache: 'no-cache'});
 	return await response.json();
 }
 
