@@ -36,8 +36,6 @@
     "del": "^6.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "glob": "^8.0.3",
-    "request": "^2.88.2",
-    "request-progress": "^3.0.0",
     "slash": "^3.0.0",
     "update-electron-app": "^2.0.1"
   },

@@ -2,12 +2,13 @@
 
 const _ = require('./script/lib.js');
 const fs = require('fs');
+const fsPromise = require('fs/promises');
+const timers = require('timers/promises');
 const path = require('path');
 const glob = require('glob');
 const del = require('del');
 const slash = require('slash');
-const request = require('request');
-const progress = require('request-progress');
+const progress = require('./util/progress.js');
 const os = require('os');
 const childProcess = require('child_process');
 const {ipcRenderer} = require('electron');
@@ -42,59 +43,44 @@ async function updateProfile(installDirectory, packDirectory, packData) {
 	await fs.promises.writeFile(path.join(installDirectory, 'launcher_profiles.json'), JSON.stringify(data, null, 2));
 }
 
-function downloadFile(url, destinationDirectory, infoCallback, progressCallback) {
-	let infoCalled = false;
+async function downloadFile(url, destinationDirectory, setInfo, setProgress) {
+	let retriesLeft = 3;
 	
-	return new Promise(async (resolve) => {
-		let retries = 3;
-		while (retries > 0) {
-			try {
-				progressCallback({percent: null});
-				let promise = new Promise((attemptResolve, reject) => {
-					let fileRequest = progress(request(url), {throttle: 50}).on('progress', (state) => {
-						if (progressCallback) {
-							progressCallback(state);
-						}
-					}).on('error', (error) => {
-						console.error('Network error', url);
-						reject(error);
-					}).on('response', (response) => {
-						if (response.statusCode !== 200) {
-							console.error('Non 200 status code', url);
-							reject(new Error(`Non 200 status code for ${url}`));
-
-							return;
-						}
-
-						let fileName = path.parse(fileRequest.uri.href).base;
-						let downloadPath = path.join(destinationDirectory, fileName);
-						
-						if (!infoCalled && infoCallback) {
-							infoCallback(fileRequest, fileName);
-						}
-
-						console.log(`Receiving ${url}`);
-						fileRequest.pipe(fs.createWriteStream(downloadPath)).on('finish', () => {
-							attemptResolve(fileName);
-						}).on('error', (error) => {
-							console.error('Pipe error', url);
-							reject(error);
-						});
-					});
-				});
-				let fileName = await promise;
-				resolve(fileName);
-				break;
-			} catch (error) {
-				retries--;
-				// Do nothing
+	while (retriesLeft > 0) {
+		try {
+			setProgress({percent: null});
+			const abortController = new AbortController();
+			const response = await fetch(url, {signal: abortController.signal});
+			console.log(`Receiving ${response.url}`);
+			
+			if (response.status !== 200) {
+				console.error('Non 200 status code', url);
+				throw new Error(`Non 200 status code for ${url}`);
 			}
+			
+			const fileName = path.parse(response.url).base;
+			const downloadPath = path.join(destinationDirectory, fileName);
+			setInfo(fileName, abortController);
+			
+			const buffer = await progress(response, setProgress);
+			fsPromise.writeFile(downloadPath, buffer);
+			
+			return fileName;
+		} catch (error) {
+			// Ignore aborts
+			if (error.name === 'AbortError') {
+				break;
+			}
+			
+			console.warn(error);
+			await timers.setTimeout(500);
+			retriesLeft--;
 		}
-		
-		if (retries == 0) {
-			showSnackbar('Failed to download file! See console for details', 10000);
-		}
-	});
+	}
+	
+	if (retriesLeft == 0) {
+		showSnackbar('Failed to download file! See console for details', 10000);
+	}
 }
 
 function filterMods(target, packData) {
@@ -130,16 +116,16 @@ function downloadMods(target, mods, modsDirectory, downloadDirectory, progressEl
 				
 				modProgressElement.message = `Verifying ${mod.name}... (0%)`;
 				modProgressElement.value = null;
-				downloadFile(mod.url, downloadDirectory, (fileRequest, fileName) => {
+				downloadFile(mod.url, downloadDirectory, (fileName, abortController) => {
 					fileMap.set(mod.id, fileName);
 					// Don't download if the mod is already installed locally
 					if (fs.existsSync(path.join(modsDirectory, fileName))) {
 						aborted = true;
-						fileRequest.abort();
+						abortController.abort();
 					}
-				}, (state) => {
-					modProgressElement.message = `${state.percent === null ? 'Verifying' : 'Downloading'} ${mod.name}... (${(state.percent * 100).toFixed()}%)`;
-					modProgressElement.value = state.percent;
+				}, ({percent}) => {
+					modProgressElement.message = `${percent === null ? 'Verifying' : 'Downloading'} ${mod.name}... (${(percent * 100).toFixed()}%)`;
+					modProgressElement.value = percent;
 				}).then(async (fileName) => {
 					if (!aborted) {
 						let downloadPath = path.join(downloadDirectory, fileName);
@@ -184,18 +170,9 @@ function downloadMods(target, mods, modsDirectory, downloadDirectory, progressEl
 	});
 }
 
-function getJSON(url) {
-	return new Promise((resolve, reject) => {
-		request(url, {json: true, headers: {
-			'Cache-Control': 'no-cache',
-		}}, (error, response, data) => {
-			if (error) {
-				reject(error);
-			}
-
-			resolve(data);
-		});
-	});
+async function getJSON(url) {
+	const response = await fetch(url);
+	return await response.json();
 }
 
 function showSnackbar(message, timeout = 5000, button = {}) {
@@ -466,9 +443,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 	
 	async function installForge(packData, downloadDirectory, type) {
 		progressElement.message = 'Downloading Minecraft Forge...';
-		await downloadFile(`https://maven.minecraftforge.net/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, (state) => {
-			progressElement.message = `Downloading Minecraft Forge... (${(state.percent * 100).toFixed()}%)`;
-			progressElement.value = state.percent;
+		await downloadFile(`https://maven.minecraftforge.net/net/minecraftforge/forge/${packData.version.forge}/forge-${packData.version.forge}-installer.jar`, downloadDirectory, null, ({percent}) => {
+			progressElement.message = `Downloading Minecraft Forge... (${(percent * 100).toFixed()}%)`;
+			progressElement.value = percent;
 		}).then(async (fileName) => {
 			let filePath = path.join(downloadDirectory, fileName);
 
@@ -666,27 +643,27 @@ window.addEventListener('DOMContentLoaded', async () => {
 					let modLink = _.createHTML(`<div style='margin-bottom: 10px;'><span style='margin-right: 1em; font-weight: 500;'>${mod.name}</span><button class='mdc-button mdc-button--raised' style='margin: 10px 0; height: 32px; font-size: 0.75rem;'><span class='mdc-button__label'>Download</span></button></div>`, progressGroupElement);
 					let downloadButton = modLink.querySelector('.mdc-button');
 					manualPromises.push(new Promise((resolve) => {
-					downloadButton.addEventListener('click', (event) => {
-						event.preventDefault();
-						ipcRenderer.send('manual-mod', mod.name, mod.url, modsDirectory);
-						downloadButton.setAttribute('disabled', '');
-						ipcRenderer.on('manual-mod', (event, modName, state) => {
-							if (modName == mod.name) {
-								let label;
+						downloadButton.addEventListener('click', (event) => {
+							event.preventDefault();
+							ipcRenderer.send('manual-mod', mod.name, mod.url, modsDirectory);
+							downloadButton.setAttribute('disabled', '');
+							ipcRenderer.on('manual-mod', (event, modName, state) => {
+								if (modName == mod.name) {
+									let label;
 								
-								if (state == 'waiting') {
-									label = 'Waiting for Download...';
-								} else if (state == 'downloading') {
-									label = 'Downloading...';
-								} else {
-									label = 'Download Complete';
+									if (state == 'waiting') {
+										label = 'Waiting for Download...';
+									} else if (state == 'downloading') {
+										label = 'Downloading...';
+									} else {
+										label = 'Download Complete';
 										resolve();
-								}
+									}
 								
-								downloadButton.querySelector('.mdc-button__label').innerText = label;
-							}
+									downloadButton.querySelector('.mdc-button__label').innerText = label;
+								}
+							});
 						});
-					});
 					}));
 				}
 			}
