@@ -60,7 +60,9 @@ async function downloadFile(url, destinationDirectory, setInfo, setProgress) {
 			
 			const fileName = path.parse(response.url).base;
 			const downloadPath = path.join(destinationDirectory, fileName);
-			setInfo(fileName, abortController);
+			if (setInfo) {
+				setInfo(fileName, abortController);
+			}
 			
 			const buffer = await progress(response, setProgress);
 			fsPromise.writeFile(downloadPath, buffer);
