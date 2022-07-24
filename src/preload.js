@@ -485,7 +485,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		
 		while (true) {
 			try {
-				packs = await getJSON('https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/index.json');
+				packs = await getJSON('https://redpack.musub.io/packs/index.json');
 				break;
 			} catch (error) {
 				// Do nothing
@@ -499,7 +499,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 		for (const pack of packs) {
 			const packItem = _.createHTML(`<div class='item'><div class='title'>${pack}</div><div class='version'>Loading...</div></div>`, packSelectElement);
 			
-			packPromises.push(getJSON(`https://raw.githubusercontent.com/Smiley43210/RedPack/master/packs/${pack}.json`).then((packData) => {
+			packPromises.push(getJSON(`https://redpack.musub.io/packs/${pack}.json`).then((packData) => {
 				packData.id = pack;
 				
 				packItem.children[0].innerText = packData.name;
