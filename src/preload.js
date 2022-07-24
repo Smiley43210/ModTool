@@ -16,10 +16,6 @@ const {ipcRenderer} = require('electron');
 const DOWNLOAD_SLOTS = 3;
 let isBusy = false;
 
-const Directory = {};
-Directory.SELF = __dirname;
-Directory.PACKS = path.join(Directory.SELF, 'packs');
-
 async function updateProfile(installDirectory, packDirectory, packData) {
 	let totalMem = os.totalmem() / 2 ** 30;
 	let configuredMem = packData.ram.minimum;
