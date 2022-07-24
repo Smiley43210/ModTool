@@ -22,15 +22,15 @@
   "author": "Smiley43210",
   "license": "CC0-1.0",
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.61",
-    "@electron-forge/maker-deb": "^6.0.0-beta.61",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
-    "@electron-forge/maker-zip": "^6.0.0-beta.61",
-    "@electron-forge/publisher-github": "^6.0.0-beta.61",
-    "electron": "^19.0.4",
-    "eslint": "^8.18.0",
-    "eslint-plugin-html": "^6.2.0"
+    "@electron-forge/cli": "^6.0.0-beta.64",
+    "@electron-forge/maker-deb": "^6.0.0-beta.64",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.64",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.64",
+    "@electron-forge/maker-zip": "^6.0.0-beta.64",
+    "@electron-forge/publisher-github": "^6.0.0-beta.64",
+    "electron": "^19.0.9",
+    "eslint": "^8.20.0",
+    "eslint-plugin-html": "^7.0.0"
   },
   "dependencies": {
     "del": "^6.0.0",
