@@ -114,7 +114,7 @@ if (require('electron-squirrel-startup')) {
 		
 		ipcMain.on('manual-mod', (event, mod, url, location) => {
 			// Create the browser window.
-			let window = new BrowserWindow({
+			const window = new BrowserWindow({
 				width: 1100,
 				height: 700,
 				webPreferences: {
