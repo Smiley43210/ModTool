@@ -21,11 +21,17 @@ function createWindow() {
 			nativeWindowOpen: true,
 			contextIsolation: false,
 		},
+		show: false,
 	});
 	mainWindow.setMenu(null);
 
 	// and load the index.html of the app.
 	mainWindow.loadFile('src/index.html');
+	
+	// Prevent white background flash
+	mainWindow.once('ready-to-show', () => {
+		mainWindow.show();
+	});
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
